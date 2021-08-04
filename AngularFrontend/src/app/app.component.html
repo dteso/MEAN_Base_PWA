@@ -2,7 +2,7 @@
     <div class="base" fxLayout="row">
         <!--- Menu lateral -->
         <div class="menu animated-fast" [ngClass]="fadeClass" fxLayout="column" *ngIf="logged && !isCollapsed">
-            <app-sidebar class="menu p-3" (logout)="logout()" (onNavigate)="collapse()"></app-sidebar>
+            <app-sidebar class="menu p-3" (logout)="logout()" [config]="config" (onNavigate)="collapse()"></app-sidebar>
         </div>
         
         <!-- Bloque principal -->

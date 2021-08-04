@@ -2,5 +2,14 @@
     "MESSAGES": {
         "WELCOME": "Bienvenido",
         "LOGOUT": "Cerrar sesión"
+    },
+    "MENU":{
+        "OPTIONS":{
+            "SKILLS": "Habilidades",
+            "PROJECTS": "Proyectos",
+            "RESOURCES": "Recursos",
+            "CONTACT": "Contacto",
+            "LOGOUT": "Salir"
+        }
     }
 }

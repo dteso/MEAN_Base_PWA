@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { NewsletterService } from './services/newsletter/newsletter.service';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
+import { sidebarConfig } from './modules/layout/sidebar/config/sidebar.config';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,6 +19,8 @@ export class AppComponent implements OnInit {
   isCollapsed = true;
   user;
   fadeClass = 'slideInLeft';
+
+  config = sidebarConfig;
 
   constructor(
     private readonly storageService: StorageService,
@@ -43,6 +46,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){
     this.authService.isAuthenticated$.subscribe( isLogged => this.logged = isLogged);
+    this.isCollapsed = true;
   }
 
   subscribeToNotifications() {
@@ -77,9 +81,9 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    this.toggleCollapse();
     this.authService.clearAuth();
     this.router.navigate(['/']);
-    this.isCollapsed = true;
   }
 
   private checkVersionUpdates() {

@@ -8,12 +8,11 @@
     <p class="whitesmoke">{{user?.name}}</p>
 
     <hr style="color: lightblue;">
-    <button class="btn btn-outline-light mb-3 w-100" (click)="navigateToSkills()"> Skills </button>
-    <button class="btn btn-outline-light mb-3 w-100"> Projects </button>
-    <button class="btn btn-outline-light mb-3 w-100"> Devices </button>
-    <button class="btn btn-outline-light mb-3 w-100"> Blog </button>
-    <button class="btn btn-outline-light mb-3 w-100"> Contact </button>
-    <button class="btn btn-danger mb-3 w-100" (click)="logoutSubmitted()">
-        <i class="fa fa-sign-out exit-btn"></i> Logout
+
+    <button *ngFor="let link of links" 
+        [class]="link.customClass? link.customClass : 'btn btn-outline-light mb-3 w-100'" 
+        [style]="link.customStyle" 
+        (click)="link.action && link.action!==''? link.action() : navigateTo(link.route)">
+        <i [class]="link.icon"></i> {{ link.caption }}    
     </button>
 </div>
