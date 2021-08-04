@@ -1,0 +1,20 @@
+button{
+    font-family: 'Bungee', cursive; 
+}
+
+.border-radius-circle{
+    border-radius: 50%;
+}
+
+.soft-turquoise{
+    color: rgb(16, 240, 188);
+}
+
+.whitesmoke{
+    color: whitesmoke;
+}
+
+.exit-btn{
+    cursor: pointer; 
+    color: rgb(184, 5, 5);
+}

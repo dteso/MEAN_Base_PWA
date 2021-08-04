@@ -1,0 +1,33 @@
+<div class="base">
+    <div class="base" fxLayout="row">
+        <!--- Menu lateral -->
+        <div class="menu animated-fast" [ngClass]="fadeClass" fxLayout="column" *ngIf="logged && !isCollapsed">
+            <app-sidebar class="menu p-3" (logout)="logout()" (onNavigate)="collapse()"></app-sidebar>
+        </div>
+        
+        <!-- Bloque principal -->
+        <div fxLayout="column" class="base">
+            <!--- HEADER -->
+                <!-- toolbar -->
+                <div fxLayout="row" class="sub-header" *ngIf="logged">
+                    <app-toolbar [logged]="logged" (logout)="logout()" class="w-100"></app-toolbar>
+                </div>
+                <!-- cabecera -->
+                <div fxLayout="row" class="header" *ngIf="logged">
+                    <app-header [isCollapsed]="isCollapsed" class="w-100" (click)="collapse()" (toggleMenu)="toggleCollapse()"></app-header>
+                </div>
+
+            <!--CONTENT-->
+            <div fxLayout="row" [ngClass]="{'opacity-z': !isCollapsed}" class="main-content w-100 middle-center" (click)="collapse()">
+                <!-- <h1> Contenido </h1> -->
+                <router-outlet></router-outlet>
+            </div>
+
+            <!--FOOTER-->
+            <footer fxLayout="column" class="footer" *ngIf="logged">
+                <p style="color: whitesmoke;"> www.digitalophy.com </p>
+                <h6>2021<i class="fa fa-github"></i></h6>
+            </footer>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+
+
+
+<div class="container p-5 animated flip" style="background: white; color: black; opacity: 80%;" >
+  <div class="card p-2 mt-5 animated slideInUp mb-5" style="background: transparent; border: solid 0.1rem lightgray;">
+    <div class="card-title text-center mt-2"> 
+      <h2 style="color: gray;">{{user.name}}</h2>
+    </div>
+  
+    <div style="width: 100%; text-align: center;">
+      <img [src]="user.img" width="100rem" height="100rem" alt="" style="margin-top: 2rem; border-radius: 50%">
+      <div style="width: 100%; color: gray;">
+        {{user.email}}
+      </div>
+    </div>
+  
+    <div class="card-footer text-center mt-3">
+      <button class="btn nav-button btn-danger" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </div>
+  <h1 class="text-center">WELCOME {{ user.name | uppercase }}</h1>
+<br>
+  <div id="lipsum" style="color:black;">
+    <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquam ut diam pretium aliquam. Quisque vel rhoncus risus. Ut tincidunt nisi quis arcu hendrerit, et dictum nibh condimentum. Curabitur leo lacus, aliquet vel scelerisque sit amet, vehicula in risus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam lobortis velit non dui maximus eleifend. Aliquam erat volutpat. Proin gravida neque et lacus dignissim, id eleifend justo dictum. Vivamus mollis arcu scelerisque bibendum dictum. Quisque sed mauris suscipit, placerat erat ac, faucibus neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris eu libero mauris. Suspendisse massa sapien, pellentesque vel diam ac, pretium pretium diam. Nam elementum venenatis congue.
+    </p>
+    <br>
+    <p>
+    Suspendisse hendrerit turpis eget facilisis tincidunt. Donec in lorem sollicitudin nisi consectetur consectetur. Quisque pharetra tincidunt urna, sed lacinia nulla scelerisque sed. Aliquam maximus nulla vitae augue pellentesque, quis gravida felis sollicitudin. Ut tristique blandit magna, sed dignissim orci egestas pretium. Etiam dolor turpis, pharetra vitae augue non, pulvinar pulvinar odio. In hac habitasse platea dictumst.
+    </p>
+    <br>
+    <p>
+    Sed finibus ante quis facilisis vehicula. In hac habitasse platea dictumst. Morbi eu erat sed dolor finibus dapibus sed a neque. Sed sed aliquet ante, vel pellentesque augue. Etiam viverra bibendum euismod. Integer felis libero, scelerisque ultrices libero ac, mattis dignissim mauris. Nulla cursus mollis augue, ac dapibus nulla ultricies eget. Phasellus non nunc suscipit, pulvinar purus ornare, mattis sem. Proin sit amet pharetra massa.
+    </p>
+</div>
+  
+</div>

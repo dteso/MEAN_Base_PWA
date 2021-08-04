@@ -1,0 +1,8 @@
+.hamburguer{
+    cursor: pointer; 
+    color: cyan;
+}
+
+.ml-05{
+    margin-left: 0.5rem;
+}

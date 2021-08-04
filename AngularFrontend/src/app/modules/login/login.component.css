@@ -1,0 +1,48 @@
+.gradient-background{
+  background: transparent;
+  border:solid 0.1rem rgb(233, 229, 233);
+  border-radius: 2%;
+}
+
+.flex-center{
+  display: flex;
+  justify-content: center;
+}
+
+.login-background{
+  margin-top: 20%;
+  background-color: transparent;
+  width: 20rem;
+  max-height: min-content;
+  min-width: 20rem !important;
+}
+
+.mw-20{
+  min-width: 20rem;
+}
+
+h1{
+  color: white;
+}
+
+label{
+  color: white;
+}
+
+.w-100-center{
+  width: 100%;
+  text-align: center;
+}
+
+.w-100{
+  width: 100%;
+}
+
+.center{
+  text-align: center;
+}
+
+.validation-message{
+  color: rgb(255, 0, 64); 
+  font-size: smaller;
+}

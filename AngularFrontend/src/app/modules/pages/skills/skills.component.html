@@ -1,0 +1,20 @@
+<div class="container" style=" width: 100%;">
+  <!-- {{counter}} -->
+  <div class="row">
+    <div *ngIf="counter>=1" class="col-6 p-1">
+      <img src="../../../../assets/bg4.jpg" width="100%" height="100%" class="mt-1 animated zoomInLeft"/>
+    </div>
+    <div *ngIf="counter>=2" class="col-6 p-1">
+      <img src="../../../../assets/bg5.jpg" width="100%" height="100%" class="mt-1 animated zoomInRight" />
+    </div>
+  </div>
+  <div class="row">
+    <div *ngIf="counter>=3" class="col-6 p-1">
+      <img src="../../../../assets/bg6.jpg" width="100%" height="100%" class="mt-1 animated bounceIn"/>
+    </div>
+    <div *ngIf="counter>=4" class="col-6 p-1">
+      <img src="../../../../assets/bg7.jpg" width="100%" height="100%" class="mt-1 animated fadeInUp"/>
+    </div>
+  </div>
+</div>
+

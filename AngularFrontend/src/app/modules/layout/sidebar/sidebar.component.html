@@ -1,0 +1,19 @@
+<div class="text-center">
+    <h5 class="monoton-font soft-turquoise">D1G174L0PHY</h5>
+    <img [src]="user?.img? user.img : '../assets/person.png'" class="border-radius-circle" width="40rem"
+        height="40rem" />
+    <strong>
+        <p class="whitesmoke">{{user?.email}}</p>
+    </strong>
+    <p class="whitesmoke">{{user?.name}}</p>
+
+    <hr style="color: lightblue;">
+    <button class="btn btn-outline-light mb-3 w-100" (click)="navigateToSkills()"> Skills </button>
+    <button class="btn btn-outline-light mb-3 w-100"> Projects </button>
+    <button class="btn btn-outline-light mb-3 w-100"> Devices </button>
+    <button class="btn btn-outline-light mb-3 w-100"> Blog </button>
+    <button class="btn btn-outline-light mb-3 w-100"> Contact </button>
+    <button class="btn btn-danger mb-3 w-100" (click)="logoutSubmitted()">
+        <i class="fa fa-sign-out exit-btn"></i> Logout
+    </button>
+</div>

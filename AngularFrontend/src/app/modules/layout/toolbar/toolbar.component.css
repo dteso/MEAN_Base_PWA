@@ -1,0 +1,34 @@
+.toolbar-icon{
+    cursor: pointer; 
+    color: whitesmoke; 
+    font-size: 1rem; 
+    margin-top: 0.5rem; 
+    padding: 0.5rem;
+}
+
+.toolbar-exit-icon{
+    cursor: pointer; 
+    color: rgb(212, 57, 57); 
+    font-size: 1rem; 
+    margin-top: 0.5rem; 
+    padding: 0.5rem;
+}
+
+.pink{
+    background-color: rgb(8, 1, 5);
+}
+
+.toolbar-title{
+    text-align: left; 
+    margin-top: 0.5rem; 
+    margin-left: 1rem;
+}
+
+.contents-right{
+    text-align: right; 
+    display: contents;
+}
+
+.position-absolute{
+    position: absolute;
+}

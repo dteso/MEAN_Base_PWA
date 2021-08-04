@@ -1,0 +1,128 @@
+/* You can add global styles to this file, and also import other style files */
+
+.base{
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.menu{
+    /* height: 100vh; */
+    min-height: 100%;
+    width: 15rem;
+    background: -webkit-linear-gradient(-90deg, rgb(3, 110, 126) 20%, #04000f 100%);
+    text-align: center;
+    position: absolute;
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.header{
+    height: 15vh;
+    width: 100%;
+    background: black;
+    opacity: 80%;
+    color: whitesmoke;
+    text-align: center;
+    justify-content: center;
+    /* display: inline-table !important; */
+}
+
+.sub-header{
+    height: 8vh;
+    width: 100%;
+    background: black;
+    color: whitesmoke;
+    text-align: center;
+    justify-content: center;
+    /* display: inline-table !important; */
+}
+
+.main-content{
+    height: 110vh;
+    width: 100%;
+    font-family: 'Cairo', cursive;
+    max-height: 130vh;
+    overflow: auto;
+    display: table-row !important;
+}
+
+.footer{
+    height: 4rem;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    background-color: rgb(89, 90, 94);
+    color: white;
+    opacity: 60%;
+    font-family: 'Cairo', cursive;
+}
+
+.videogame-font{
+    font-family: 'Press Start 2P', cursive;
+}
+
+.middle-center{
+    vertical-align: middle; 
+    justify-content: center;
+}
+
+.opacity-z{
+    filter: blur(3px);
+}
+
+.main-content::-webkit-scrollbar {
+    width: 7px;     /* Tamaño del scroll en vertical */
+    height: 7px;    /* Tamaño del scroll en horizontal */
+}
+
+/* Cambiamos el fondo cuando esté en active */
+.main-content::-webkit-scrollbar-thumb:active {
+    background-color: rgb(23, 22, 63);
+}
+
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+.main-content::-webkit-scrollbar-track {
+    background: rgb(4, 107, 154);
+    border-radius: 4px;
+    border: 1px solid white;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+.main-content::-webkit-scrollbar-track:hover,
+.main-content::-webkit-scrollbar-track:active {
+  background: rgb(122, 195, 224);
+}
+/* 
+@media screen and (orientation: landscape) {
+    .base{
+        height: 100% !important;
+    }
+} */
+
+.menu::-webkit-scrollbar {
+    width: 5px;     /* Tamaño del scroll en vertical */
+    height: 5px;    /* Tamaño del scroll en horizontal */
+}
+
+/* Cambiamos el fondo cuando esté en active */
+.menu::-webkit-scrollbar-thumb:active {
+    background-color: rgb(23, 22, 63);
+}
+
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+.menu::-webkit-scrollbar-track {
+    background: rgb(4, 107, 154);
+    border-radius: 4px;
+    border: 1px solid white;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+.menu::-webkit-scrollbar-track:hover,
+.menu::-webkit-scrollbar-track:active {
+  background: rgb(122, 195, 224);
+}

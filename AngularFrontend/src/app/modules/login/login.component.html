@@ -1,0 +1,80 @@
+
+<div class="container flex-center animated flip">
+  <div class="card login-background mw-20">
+    <!-- <img src="..." class="card-img-top" alt="..."> -->
+    <div class="card-body gradient-background center">
+      <h1 class="card-title center">LOGIN APP</h1>
+      <div *ngIf="loginForm" class="container mb-3 mt-3">
+        <form [formGroup]="loginForm">
+          <div class="mb-3" *ngIf="registerView">
+            <label for="userInput" class="form-label">User</label>
+            <input type="text" class="form-control" id="userInput" formControlName="name" placeholder="User">
+            <ng-container>
+              <p class="validation-message" *ngIf="loginForm.controls.name.errors && loginForm.controls.name.errors.required && submitted">
+                User is required
+              </p>
+            </ng-container>
+          </div>
+          
+          <div class="mb-3" *ngIf="registerView || loginView">
+            <label for="emailInput" class="form-label">Email</label>
+            <input type="email" class="form-control" id="emailInput" formControlName="email" placeholder="e-mail">
+            <ng-container>
+              <p class="validation-message" *ngIf="loginForm.controls.email.errors && loginForm.controls.email.errors.required && submitted">
+                email is required
+              </p>
+            </ng-container>
+          </div>
+          <div class="mb-3" *ngIf="registerView || loginView">
+            <label for="passInput" class="form-label">Password</label>
+            <input type="password" class="form-control" id="passInput" formControlName="password" placeholder="Password">
+            <ng-container>
+              <p class="validation-message" *ngIf="loginForm.controls.password.errors && loginForm.controls.password.errors.required && submitted">
+                Password is required
+              </p>
+            </ng-container>
+          </div>
+        </form>
+
+        <!-- Botones de renderización de vistas -->
+        <div class="mt-5 w-100 center" *ngIf="!registerView && !loginView && !isGoogleLoggedin">
+          <button type="button" class="btn btn-primary w-100" (click)="showRegisterView()">Register</button>
+        </div>
+
+        <div class="mt-1 w-100 center" *ngIf="!registerView && !loginView && !isGoogleLoggedin">
+          <button type="button" class="btn btn-info w-100" (click)="showLoginView()">Log In</button>
+        </div>
+
+        <!-- Botones para ejecución de registro y login -->
+        <div class="mt-5 w-100 center" *ngIf="registerView">
+          <button type="button" class="btn btn-primary w-100" (click)="register()">OK</button>
+        </div>
+
+        <div *ngIf="loginView">
+          <div *ngIf="!isLoggedin" class="mt-1 w-100 center">
+            <button type="button" class="btn btn-info w-100" (click)="login()">OK</button>
+          </div>
+          <div *ngIf="isLoggedin" class="mt-1 w-100 center">
+            <button type="button" class="btn btn-info w-100" (click)="logout()">Log Out</button>
+          </div>
+        </div>
+
+
+        <div *ngIf="!isGoogleLoggedin && !loginView && !registerView" class="mt-1 w-100 center">
+          <button type="button" class="btn btn-light w-100" (click)="loginWithGoogle()">Google Sign In</button>
+        </div>
+        <div *ngIf="isGoogleLoggedin && !loginView && !registerView" class="mt-1 w-100 center">
+          <button type="button" class="btn btn-light w-100" (click)="logOutGoogle()">Google Sign Out</button>
+        </div>
+
+        <!-- Botón para restaurara pantalla -->
+        <div class="mt-1 w-100 center" *ngIf="registerView || loginView">
+          <button type="button" class="btn btn-warning w-100" (click)="resotoreViews()">Back</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
