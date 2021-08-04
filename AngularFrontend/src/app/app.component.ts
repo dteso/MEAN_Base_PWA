@@ -6,6 +6,7 @@ import { StorageService } from './services/storage/storage.service';
 import Swal from 'sweetalert2';
 import { NewsletterService } from './services/newsletter/newsletter.service';
 import { environment } from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,8 +25,15 @@ export class AppComponent implements OnInit {
     private readonly authService: AuthService,
     private swUpdate: SwUpdate,
     private swPush: SwPush,
-    private newsletterService: NewsletterService
+    private newsletterService: NewsletterService,
+    private readonly translate: TranslateService
   ){
+    const currentLanguage = navigator.language.substring(0,2);
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('es');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use(currentLanguage);
+   
     this.checkVersionUpdates();
     this.subscribeToNotifications();
     if(!this.storageService.getItem('USER')) {

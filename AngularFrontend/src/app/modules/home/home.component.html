@@ -16,11 +16,11 @@
   
     <div class="card-footer text-center mt-3">
       <button class="btn nav-button btn-danger" (click)="logout()">
-        Logout
+        {{'MESSAGES.LOGOUT' | translate}}
       </button>
     </div>
   </div>
-  <h1 class="text-center">WELCOME {{ user.name | uppercase }}</h1>
+  <h1 class="text-center">{{('MESSAGES.WELCOME' | translate) | uppercase }} {{ user.name | uppercase }}</h1>
 <br>
   <div id="lipsum" style="color:black;">
     <p>
