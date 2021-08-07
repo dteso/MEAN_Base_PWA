@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoaderService } from 'src/app/services/loader/loader.service';
 
 @Component({
   selector: 'app-skills',
@@ -7,14 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SkillsComponent implements OnInit {
 
-  counter = 0;
+  
+  imagesLoadedCounter = 0;
+  imagesLoadedLength = 4;
+  isLoading = true;
 
-  constructor() { }
 
-  ngOnInit(): void {
-    setInterval(()=> {
-      this.counter++;
-    }, 200);
+  constructor(
+    private readonly loaderService: LoaderService
+    ) { 
+      this.loaderService._loading$.next(true);
+    }
+
+  ngOnInit(): void { }
+
+  setLoaded(){
+    this.imagesLoadedCounter++;
+    console.log("Image count: " + this.imagesLoadedCounter);
+    if(this.imagesLoadedCounter === this.imagesLoadedLength){
+      this.isLoading = false;
+      this.loaderService._loading$.next(false);
+    }
   }
 
 }

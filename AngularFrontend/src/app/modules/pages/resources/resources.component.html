@@ -1,0 +1,19 @@
+<div class="mb-3 mt-5 p-5" style="text-align: center;">
+    
+    <div *ngIf="imgTemp && !isPdf">
+        <label class="form-label" style="color: white;"><strong>Preview</strong></label>
+        <div class="w-100" style="height: auto;">
+            <img [src]="imgTemp" width="auto" height="400vh" style="border: 1px solid white;"/>
+        </div>
+    </div>
+
+    <div *ngIf="isPdf" style="color: white;">
+        <i class="fa fa-file-pdf-o" style="color: white; font-size: 15rem;"></i>
+    </div>
+
+    <div class="mb-3 mt-3">
+        <input (change)="loadFile($event)" class="form-control" type="file" accept="image/*" id="formFile">
+    </div>
+    <button class="btn btn-info mt-3" (click)="uploadFile()" [disabled]="!fileToUpload && !isPdf"><i class="fa fa-upload"></i> <strong style="color: white; padding-left: 1rem;">{{'BUTTON.ACTION.UPLOAD' | translate}}</strong></button>
+  </div>
+  

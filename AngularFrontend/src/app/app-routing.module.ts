@@ -22,7 +22,13 @@ const routes: Routes = [
     path: 'skills',
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always',
-    loadChildren: () => import('./modules/pages/skills//skills.module').then( m => m.SkillsModule)
+    loadChildren: () => import('./modules/pages/skills/skills.module').then( m => m.SkillsModule)
+  },
+  {
+    path: 'resources',
+    canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
+    loadChildren: () => import('./modules/pages/resources/resources.module').then( m => m.ResourcesModule)
   },
   {
     path: '' || '**',

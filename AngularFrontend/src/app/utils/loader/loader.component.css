@@ -1,0 +1,9 @@
+.defaultLoader{
+    z-index: 999;
+    position: absolute;
+    width: 12rem;
+    top: 40%;
+    height: 12rem;
+    color: rgb(15, 111, 236);
+    justify-content: center;
+}

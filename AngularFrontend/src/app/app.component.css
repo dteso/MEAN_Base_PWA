@@ -8,7 +8,7 @@
 
 .menu{
     /* height: 100vh; */
-    min-height: 100%;
+    min-height: 100vh;
     width: 15rem;
     background: -webkit-linear-gradient(-90deg, rgb(3, 110, 126) 20%, #04000f 100%);
     text-align: center;
@@ -49,7 +49,7 @@
 }
 
 .footer{
-    height: 4rem;
+    height: 10rem;
     width: 100%;
     text-align: center;
     vertical-align: middle;

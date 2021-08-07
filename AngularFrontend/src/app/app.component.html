@@ -18,6 +18,7 @@
                 </div>
 
             <!--CONTENT-->
+            <app-loader style="justify-content: center;"></app-loader>
             <div fxLayout="row" [ngClass]="{'opacity-z': !isCollapsed}" class="main-content w-100 middle-center" (click)="collapse()">
                 <!-- <h1> Contenido </h1> -->
                 <router-outlet></router-outlet>
@@ -27,7 +28,7 @@
             <footer fxLayout="column" class="footer" *ngIf="logged">
                 <p style="color: whitesmoke;"> www.digitalophy.com </p>
                 <!-- <h1 style="color: black;">{{ 'MESSAGES.WELCOME' | translate }}</h1> -->
-                <h6>2021<i class="fa fa-github"></i></h6>
+                <h6>2021</h6>
             </footer>
         </div>
     </div>

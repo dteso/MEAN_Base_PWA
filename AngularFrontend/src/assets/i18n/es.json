@@ -11,5 +11,10 @@
             "CONTACT": "Contacto",
             "LOGOUT": "Salir"
         }
+    },
+    "BUTTON":{
+        "ACTION":{
+            "UPLOAD": "Subir Fichero"
+        }
     }
 }

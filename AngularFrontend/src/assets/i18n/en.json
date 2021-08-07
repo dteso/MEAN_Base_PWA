@@ -11,5 +11,10 @@
             "CONTACT": "Contact",
             "LOGOUT": "Log Out"
         }
+    },
+    "BUTTON":{
+        "ACTION":{
+            "UPLOAD": "Upload File"
+        }
     }
 }

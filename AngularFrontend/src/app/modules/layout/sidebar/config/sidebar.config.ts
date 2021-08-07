@@ -23,8 +23,8 @@ export function sidebarConfig ( translateService: TranslateService, authService:
             caption: translateService.instant('MENU.OPTIONS.RESOURCES'),
             customClass: 'btn btn-outline-light mb-3 w-100',
             customStyle: '',
-            action: ()=>{ return },
-            route: '',
+            //action: ()=>{ return },
+            route: 'resources',
             icon:''
         },
         {

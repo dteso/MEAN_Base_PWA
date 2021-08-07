@@ -1,6 +1,7 @@
 .hamburguer{
     cursor: pointer; 
     color: cyan;
+    min-width: fit-content;
 }
 
 .ml-05{

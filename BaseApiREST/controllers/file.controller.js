@@ -10,7 +10,6 @@ class FileController extends BaseController {
 
 
     uploadFile = (req, res) => {
-        console.log("En el controller");
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).json({
                 ok: false,
@@ -50,7 +49,8 @@ class FileController extends BaseController {
             }
             res.json({
                 ok: true,
-                msg: `YEAHHHHH!!! File ${fileName} Uploaded`
+                msg: `SUCCESS - File ${fileName} Uploaded`,
+                file: fileName 
             })
         });
 

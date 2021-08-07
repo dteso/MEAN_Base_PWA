@@ -8,6 +8,22 @@ import { NewsletterService } from './services/newsletter/newsletter.service';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { sidebarConfig } from './modules/layout/sidebar/config/sidebar.config';
+import { LoaderService } from './services/loader/loader.service';
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top',
+  background: 'black',
+  showConfirmButton: true,
+  showCancelButton: true,
+  // timer: 3000,
+  //timerProgressBar: true,
+  // didOpen: (toast) => {
+  //   toast.addEventListener('mouseenter', Swal.stopTimer)
+  //   toast.addEventListener('mouseleave', Swal.resumeTimer)
+  // }
+});
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,7 +45,8 @@ export class AppComponent implements OnInit {
     private swUpdate: SwUpdate,
     private swPush: SwPush,
     private newsletterService: NewsletterService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly loader: LoaderService
   ){
     const currentLanguage = navigator.language.substring(0,2);
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -45,6 +62,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.loader._loading$.next(false);
     this.authService.isAuthenticated$.subscribe( isLogged => this.logged = isLogged);
     this.isCollapsed = true;
   }
@@ -81,7 +99,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.toggleCollapse();
+    this.isCollapsed=true;
     this.authService.clearAuth();
     this.router.navigate(['/']);
   }
@@ -97,14 +115,29 @@ export class AppComponent implements OnInit {
           let msg = `New version ${appData.version} available. Features added:`;
           msg += `${appData.changelog}.`;
           msg += ` Reload?`;
-          // if (confirm(msg)) {
-          //   window.location.reload();
-          // }
-          this.showPrompt('warning', `Great incoming changes!!!`, msg);
+          //this.showPrompt('warning', `Great incoming changes!!!`, msg);
+          this.showToast( `Great incoming changes!!!`, msg);
         }
       });
     }
   }
+
+  showToast(title: any, text: any) {
+    Toast.fire({
+      icon: 'success',
+      title,
+      text
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Updated!',
+          'Your application will be updated in background. Enjoy!',
+          'success'
+        )
+      }
+    });
+  }
+  
 
   showPrompt(icon: any, title: any, text: any) {
     Swal.fire({
