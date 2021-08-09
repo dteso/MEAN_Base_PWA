@@ -10,7 +10,7 @@ router.use(expressFileUpload());
 /*************************************************************** 
                       PUT: /upload
 ****************************************************************/
-router.put('/:folder',
+router.put('/',
   [
     // check('email', 'email is required').isEmail(),
     // check('password', 'password is required').not().isEmpty(),
@@ -19,7 +19,7 @@ router.put('/:folder',
   controller.uploadFile);
 
 
-  /*************************************************************** 
+/*************************************************************** 
                       GET: /upload/list
 
                   * Gets all images in DB *
@@ -33,7 +33,7 @@ router.put('/:folder',
   controller.listFiles);
 
 
-  /*************************************************************** 
+/*************************************************************** 
                   GET: /upload/list/:folder
 
                * Gets all images from a folder *
@@ -46,4 +46,33 @@ router.get('/list/:folder',
 ],
 controller.listByFolder);
 
-  module.exports = router;
+/*************************************************************** 
+                  GET: /upload/structure
+
+               * Gets all images from a folder *
+****************************************************************/
+router.post('/structure',
+[
+  // check('email', 'email is required').isEmail(),
+  // check('password', 'password is required').not().isEmpty(),
+  // validateFields
+],
+controller.getFolderStructure);
+
+
+
+
+/*************************************************************** 
+                  DELETE: /upload/:uid
+
+               * Gets all images from a folder *
+****************************************************************/
+router.delete('/:uid',
+[
+  // check('email', 'email is required').isEmail(),
+  // check('password', 'password is required').not().isEmpty(),
+  // validateFields
+],
+controller.deleteFile);
+
+module.exports = router;
