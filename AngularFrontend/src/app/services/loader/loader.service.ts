@@ -10,7 +10,7 @@ export class LoaderService {
 
   constructor() {
     this._loading$.subscribe( status => {
-      console.log("Loader Status" + status);
+      // console.log("Loader Status" + status);
     });
    }
 }

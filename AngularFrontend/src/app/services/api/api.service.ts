@@ -17,11 +17,18 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   get(path:string, params: HttpParams = new HttpParams()): Observable<any>{
-    this.options.params = params;
+    // if(params){
+    //   this.options.params = params;
+    // }
     return this.http.get(`${environment.api_url}/${path}`, this.options);
   }
 
   post(path:string, body: object = {}): Observable<any>{
     return this.http.post(`${environment.api_url}/${path}`, body, this.options);
+  }
+
+
+  delete(path:string): Observable<any>{
+    return this.http.delete(`${environment.api_url}/${path}`);
   }
 }

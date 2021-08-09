@@ -13,7 +13,6 @@ h2, p, footer{
     font-family: 'Cairo',cursive;
 }
 
-
 .stroke-transparent {
     -webkit-text-stroke: 1px #000;
     -webkit-text-fill-color: transparent;
@@ -44,4 +43,9 @@ h2, p, footer{
 
 .w-100{
   width: 100%;
+}
+
+.blured{
+  filter: blur(100px);
+  z-index: 1;
 }

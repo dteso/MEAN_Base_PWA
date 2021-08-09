@@ -12,6 +12,7 @@ import { Observable, throwError } from 'rxjs';
 import { StorageService } from '../../services/storage/storage.service';
 import { catchError, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { LoaderService } from '../loader/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +20,13 @@ import Swal from 'sweetalert2';
 export class HttpInterceptorService implements HttpInterceptor {
   private readonly requests: HttpRequest<any>[] = [];
 
-  constructor(private readonly storage: StorageService) {}
+  constructor(private readonly storage: StorageService, private loader: LoaderService) {}
 
   removeRequest(req: HttpRequest<any>) {
     const i = this.requests.indexOf(req);
     if (i >= 0) {
       this.requests.splice(i, 1);
+      this.loader._loading$.next(false); 
     }
   }
 
@@ -45,6 +47,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     });
     request = request.clone({ headers: request.headers.set('Accept', '*/*') });
     this.requests.push(request);
+    this.loader._loading$.next(true);
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {

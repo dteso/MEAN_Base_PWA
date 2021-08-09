@@ -1,0 +1,27 @@
+.folder{
+    color: white;
+    text-align: left;
+    font-size: larger;
+    background-color: rgb(126, 126, 5);
+    opacity: 70%;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 3%;
+}
+
+.file{
+    color: white;
+    text-align: left;
+    font-size: larger;
+    background-color: rgb(11, 110, 175);
+    opacity: 70%;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 3%;
+}
+
+
+.contents-right{
+    text-align: right; 
+    display: contents;
+}
