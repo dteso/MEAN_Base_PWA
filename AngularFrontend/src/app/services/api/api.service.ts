@@ -27,8 +27,15 @@ export class ApiService {
     return this.http.post(`${environment.api_url}/${path}`, body, this.options);
   }
 
+  put(path:string, body: object = {}): Observable<any>{
+    return this.http.put(`${environment.api_url}/${path}`, body, this.options);
+  }
 
   delete(path:string): Observable<any>{
+    return this.http.delete(`${environment.api_url}/${path}`);
+  }
+
+  deleteForm(path:string): Observable<any>{
     return this.http.delete(`${environment.api_url}/${path}`);
   }
 }

@@ -47,9 +47,16 @@ export class FileuploadService {
     return this.apiService.get("upload/list");
   }
 
-
   deleteFile(uid){
-    return this.apiService.delete(`upload/${uid}`);
+    return this.apiService.delete(`upload/file/${uid}`);
+  }
+
+  createFolder(path){
+    return this.apiService.post('upload/folder', { folderSrc: path });
+  }
+
+  deleteFolder(path){
+    return this.apiService.put('upload/folder', { folderSrc: path });
   }
 
   getStructure(path){
@@ -57,10 +64,8 @@ export class FileuploadService {
   }
 
   getFilesByFolder(folder){
-    // console.log(folder);
     const splittedPath = folder.split('/');
     const terminalParam = splittedPath[splittedPath.length-1];
-    // console.log(terminalParam);
     return this.apiService.get(`upload/list/${terminalParam}`);
   }
 

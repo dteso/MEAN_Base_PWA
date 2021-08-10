@@ -17,7 +17,6 @@ import { environment } from '../environments/environment';
 import { NewsletterService } from './services/newsletter/newsletter.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { ResourcesComponent } from './modules/pages/resources/resources.component';
 import { LoaderModule } from './utils/loader/loader.module';
 
 @NgModule({

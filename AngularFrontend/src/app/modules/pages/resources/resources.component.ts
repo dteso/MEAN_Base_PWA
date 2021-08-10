@@ -53,9 +53,6 @@ export class ResourcesComponent implements OnInit {
       console.log("Files", res);
       this.dbFiles = res.dbFiles;
       this.routes = res.routes.children;
-
-      console.log("Routes", this.routes)
-
       this.dbFiles.map(file => file.src = this.getTruePath(file.src));
       this.imagesLoadedLength = this.dbFiles.length;
       if (this.imagesLoadedLength === 0) this.loaderService._loading$.next(false);
@@ -64,6 +61,7 @@ export class ResourcesComponent implements OnInit {
     });
   }
 
+  /* Precarga un archivo */
   loadFile(event) {
     this.fileToUpload = event.target.files[0];
     console.log(this.fileToUpload);
@@ -77,6 +75,7 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
+  /* ejecuta la subida de un archivo al servidor */
   uploadFile() {
     console.log("Archivo subido!!!");
     const terminalCurrentFolder = this.currentPath.split('/')[(this.currentPath.split('/')).length - 1];
@@ -84,19 +83,21 @@ export class ResourcesComponent implements OnInit {
       console.log("Imagen subida: " + img);
       this.imgTemp = undefined;
       this.fileToUpload = undefined;
-      this.showPrompt();
+      this.showPrompt(this.translateService.instant('FILE.UPLOAD.SUCESS'));
       this.fileUploadService.getFilesByFolder(terminalCurrentFolder).subscribe(res => {
         this.dbFiles = res.dbFiles;
         this.dbFiles.map(file => file.src = this.getTruePath(file.src));
         this.imagesLoadedLength = this.dbFiles.length;
+        this.showFileInput=false;
       });
     }
     )
   }
 
+  /* borra un archivo */
   deleteFile(id) {
     this.fileUploadService.deleteFile(id).subscribe(res => {
-      this.showPrompt();
+      this.showPrompt(this.translateService.instant('FILE.DELETE.SUCESS'));
       this.fileUploadService.getFilesByFolder(this.currentPath).subscribe(res => {
         this.dbFiles = res.dbFiles;
         this.dbFiles.map(file => file.src = this.getTruePath(file.src));
@@ -105,10 +106,77 @@ export class ResourcesComponent implements OnInit {
     });
   }
 
-  showPrompt() {
+  /* crea una carpeta */
+  createFolder(path) {
+    console.log(path);
+    Swal
+      .fire({
+        title: "File Name",
+        input: "text",
+        showCancelButton: true,
+        confirmButtonText: "Create",
+        cancelButtonText: "Close",
+      })
+      .then(resultado => {
+        if (resultado.value) {
+          let nombre = resultado.value;
+          this.fileUploadService.createFolder(`${path}/${nombre}`).subscribe(res => {
+            this.showPrompt(this.translateService.instant('FILE.FOLDER_CREATE.SUCESS'));
+            this.routes = res.routes.children;
+            Swal.fire(`Folder ${nombre} created!!!`.trim(), '', 'success');
+          });
+        }
+      });
+  }
+
+  /* borra una carpeta */
+  deleteFolder(path) {
+    this.fileUploadService.deleteFolder(`${path}`).subscribe(res => {
+      this.showPrompt(this.translateService.instant('FILE.FOLDER_DELETE.SUCESS'));
+      this.routes = res.routes.children;
+      this.currentPath = this.getDirFromFileRoute(path);
+    });
+  }
+
+
+  /* permite la navegación hacia atrás */
+  onBackFolder() {
+    let previousRoot;
+    let splittedCurrentFolder = this.currentPath.split('/');
+    splittedCurrentFolder.pop();
+    previousRoot = splittedCurrentFolder.join('/');
+    this.getTreeNode(previousRoot);
+  }
+
+
+  /* obtiene la estructura de carpetas desde una raíz pasada como argumento */
+  getTreeNode(root) {
+    console.log('Getting tree node by root: ', root);
+    this.currentPath = root;
+    this.fileUploadService.getStructure(root).subscribe(res => {
+      if(res.paths)
+        this.routes = res.paths.children;
+      if (root !== '.') {
+        this.fileUploadService.getFilesByFolder(root).subscribe(res => {
+          this.dbFiles = res.dbFiles;
+          this.dbFiles.map(file => file.src = this.getTruePath(file.src));
+          this.imagesLoadedLength = this.dbFiles.length;
+          if (this.imagesLoadedLength === 0)
+            this.loaderService._loading$.next(false);
+          this.isLoading = false;
+          console.log(this.dbFiles);
+        });
+      }
+    });
+  }
+
+/*--------------------------------------------------------------------------------------------*/
+
+
+  showPrompt(title) {
     Toast.fire({
       icon: 'success',
-      title: this.translateService.instant('FILE.UPLOAD.SUCESS')
+      title
     });
   }
 
@@ -126,39 +194,18 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
-  onBackFolder() {
-    let previousRoot;
-    let splittedCurrentFolder = this.currentPath.split('/');
-    splittedCurrentFolder.pop();
-    previousRoot = splittedCurrentFolder.join('/');
-    this.getTreeNode(previousRoot);
-  }
-
-  getTreeNode(root) {
-    console.log('Current root', root);
-    this.currentPath = root;
-    this.fileUploadService.getStructure(root).subscribe(res => {
-      this.routes = res.paths.children;
-      if (root !== '.') {
-        this.fileUploadService.getFilesByFolder(root).subscribe(res => {
-          this.dbFiles = res.dbFiles;
-          this.dbFiles.map(file => file.src = this.getTruePath(file.src));
-          this.imagesLoadedLength = this.dbFiles.length;
-          if (this.imagesLoadedLength === 0)
-            this.loaderService._loading$.next(false);
-          this.isLoading = false;
-          console.log(this.dbFiles);
-        });
-      }
-    });
-  }
-
   verifyIfIsFile(path) {
     return path.substring(1, path.length).indexOf('.') > 0;
   }
 
-  onShowFileInput(){
+  onShowFileInput() {
     this.showFileInput = !this.showFileInput;
   }
+  
+  getDirFromFileRoute(route){
+    let splittedRoute =  route.split('/');
+    splittedRoute.pop();
+    return splittedRoute.join('/');
+}
 
 }

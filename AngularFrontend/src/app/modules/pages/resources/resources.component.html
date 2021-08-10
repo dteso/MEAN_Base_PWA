@@ -1,71 +1,90 @@
-<div  [ngClass]="{'blured': isLoading }" class="mb-3 mt-5 p-5" style="text-align: center;">
-    <!-- Preview image before upload-->
-    <div *ngIf="imgTemp && !isPdf">
-        <label class="form-label" style="color: white;"><strong>Preview</strong></label>
-        <div class="w-100" style="height: auto;">
-            <img [src]="imgTemp" width="400vh" height="auto" style="border: 1px solid white;" />
-        </div>
-    </div>
+<div [ngClass]="{'blured': isLoading }" class="mb-3 mt-5 p-4"
+    style="text-align: center; background: rgb(29, 28, 28); opacity: 90%;">
 
     <!-- PDF file in preview-->
     <div *ngIf="isPdf" style="color: white;">
         <i class="fa fa-file-pdf-o" style="color: white; font-size: 15rem;"></i>
     </div>
 
-    <h1 style="color: white" *ngIf="currentPath && currentPath.length && currentPath!=='.' else adviceBlock">{{currentPath}}</h1>
+    <!-- Path actual -->
+    <div style="padding: 0.5rem; background: rgb(8, 10, 10); border-radius: 2%;">
+        <h1 style="color: white" *ngIf="currentPath && currentPath.length && currentPath!=='.' else adviceBlock">
+            {{currentPath}}</h1>
+    </div>
+
     <ng-template #adviceBlock>
         <div style=" background-color: rgb(250, 189, 189); opacity: 60%; padding: 3rem; font-weight: bolder;">
             <h1 style="color: red;"><i class="fa fa-exclamation-triangle"></i> Server directories</h1>
-            <p style="color: red;">No changes will be allowed in this directory tree. This is a tree view structure project for develpment usage.</p>
+            <p style="color: red;">No changes will be allowed in this directory tree. This is a tree view structure
+                project for develpment usage.</p>
         </div>
     </ng-template>
 
-    <!-- File formulary -->
-    <div *ngIf="currentPath && currentPath.length && currentPath!=='.' && showFileInput">
-        <div class="w-100" style="text-align: right;" *ngIf="">
-            <button class="btn btn-danger mt-3" (click)="onShowFileInput()"><i
-                class="fa fa-close"></i> 
-            </button>
-        </div>
-        <div class="mb-3 mt-3">
-            <input (change)="loadFile($event)" class="form-control" type="file" accept="*/*" id="formFile">
-        </div>
-        <button class="btn btn-info mt-3" (click)="uploadFile()" [disabled]="!fileToUpload && !isPdf"><i
-                class="fa fa-upload"></i> <strong style="color: white; padding-left: 1rem;">{{'BUTTON.ACTION.UPLOAD' |
-                translate}}</strong>
-        </button>
-    </div>
-
-
 
     <hr>
+    <div>
+        <!-- File formulary -->
+        <div *ngIf="currentPath && currentPath.length && currentPath!=='.' && showFileInput" class="animated flipInX"
+            style="padding: 1rem; border: solid 0.1rem rgb(42, 42, 42);border-radius: 2rem;">
 
-    <div *ngIf="currentPath && currentPath.length && currentPath!=='.'" class="row w-100 flex-center" style="color: white;">
-        <div class="col" style="text-align: left; cursor: pointer;" (click)="onBackFolder()">
-            <i class="fa fa-arrow-left" ></i> Back
+            <!-- Preview image before upload-->
+            <div class="w-100" style="text-align: right;">
+                <button class="btn btn-danger mt-3" (click)="onShowFileInput()"><i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div *ngIf="imgTemp && !isPdf">
+                <label class="form-label" style="color: white;"><strong>Preview</strong></label>
+                <div class="w-100" style="height: auto;">
+                    <img [src]="imgTemp" style="border: 1px solid white; max-width: 100%; max-height: 100%;" />
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <input (change)="loadFile($event)" class="form-control" type="file" accept="image/*" id="formFile">
+            </div>
+            <button class="btn btn-info mt-3" (click)="uploadFile()" [disabled]="!fileToUpload && !isPdf"><i
+                    class="fa fa-upload"></i> <strong style="color: white; padding-left: 1rem;">{{'BUTTON.ACTION.UPLOAD'
+                    |
+                    translate}}</strong>
+            </button>
         </div>
-        <div class="col contents-right">
-            <div style="cursor: pointer; margin-left: 2rem;" (click)="onShowFileInput()">
-                <i class="fa fa-upload"></i> Upload
-            </div>
 
-            <div style="cursor: pointer; margin-left: 2rem;">
-                <i class="fa fa-folder"></i> New Folder
+        <!-- Options -->
+        <div *ngIf="currentPath && currentPath.length && currentPath!=='.'" class="row flex-center mt-3"
+            style="color: white; background-color: black; padding: 0.5rem;">
+            <div class="col" style="text-align: left; cursor: pointer;" (click)="onBackFolder()">
+                <i class="fa fa-arrow-left"></i> Back
             </div>
+            <div class="col contents-right">
+                <div style="cursor: pointer; margin-left: 2rem;" (click)="onShowFileInput()">
+                    <i class="fa fa-upload"></i>
+                </div>
+                <div style="cursor: pointer; margin-left: 2rem;" (click)="createFolder(currentPath)">
+                    <i class="fa fa-folder"></i>
+                </div>
+            </div>
+        </div>
+        <hr style="color: silver;">
+
+        <!-- Directory tree -->
+        <div *ngFor="let route of routes" class="row mt-1 animated flipInX" (click)="getTreeNode(route.path)">
+            <div class="col"
+                style="color: white; text-align: left; font-size: larger; background-color: rgb(9, 143, 240); opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
+                *ngIf="!verifyIfIsFile(route.path)"><i class="fa fa-folder p-2"></i>{{route.path | getFolderName}}</div>
+            <div style="color: white; text-align: left; font-size: larger; opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
+                *ngIf="verifyIfIsFile(route.path)"><i class="fa fa-file p-2"></i>{{route.path}}</div>
+            <div *ngIf="!verifyIfIsFile(route.path)" class="col-1 mt-3"
+                style="color: rgb(231, 132, 3); cursor: pointer; font-size: 1.5rem;" (click)="deleteFolder(route.path)">
+                <i class="fa fa-trash"></i></div>
         </div>
     </div>
 
 
-    <!-- Directory tree -->
-    <div *ngFor="let route of routes" class="mt-1" (click)="getTreeNode(route.path)">
-        <div style="color: white; text-align: left; font-size: larger; background-color: rgb(9, 143, 240); opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 3%;" *ngIf="!verifyIfIsFile(route.path)"><i class="fa fa-folder"></i>{{route.path}}</div>
-        <div style="color: white; text-align: left; font-size: larger; opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 3%;" *ngIf="verifyIfIsFile(route.path)"><i class="fa fa-file mr-2"></i>{{route.path}}</div>
-    </div>
-    
+
     <!-- <div *ngIf="dbFiles && !dbFiles.length" class="mt-1" style="text-align: center; color: white; font-weight: bolder; width: 100%;">
         No files in this folder
     </div> -->
-    <div *ngIf="dbFiles && dbFiles.length" class="row mt-2" style="color: white; font-weight: bolder; background: black; opacity: 60%; padding-top: 0.5rem;">
+    <div *ngIf="dbFiles && dbFiles.length" class="row mt-2"
+        style="color: white; font-weight: bolder; background: black; opacity: 60%; padding-top: 0.5rem;">
         <div class="col-3" style="text-align: left;">
             <strong>File</strong>
         </div>
@@ -77,7 +96,7 @@
         </div>
         <div class="col-3">
             Action
-        </div>    
+        </div>
     </div>
     <hr>
     <div *ngFor="let file of dbFiles" style="color: white;" class="row">
