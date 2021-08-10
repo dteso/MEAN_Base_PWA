@@ -117,10 +117,53 @@ class FileController extends BaseController {
             }
             await deleteFile(dbFile.src);
             await File.findByIdAndDelete(uid);
+            const routes = buildTree(this.getDirFromFileRoute(dbFile.src));
             return res.json({
               ok: true,
               msg: `File uid=${uid} DELETED sucessfully`,
-              file: dbFile
+              file: dbFile,
+              routes
+            });
+        }catch(err){
+            res.status(500).json({
+                ok: false,
+                error: err
+            })
+        }
+    }
+
+
+    
+    createFolder = async (req,res) => {
+        console.log("FOLDER CREATE REQUEST");
+        try{
+            await createFolder(req.body.folderSrc);
+            const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
+            return res.json({
+              ok: true,
+              msg: `Folder src=${req.body.folderSrc} CREATED sucessfully`,
+              routes
+            });
+        }catch(err){
+            res.status(500).json({
+                ok: false,
+                error: err
+            })
+        }
+
+    }
+
+    deleteFolder = async (req,res) => {
+        console.log("FOLDER DELETE REQUEST");
+        try{
+            await deleteFolder(req.body.folderSrc);
+            console.log("--------------->", this.getDirFromFileRoute(req.body.folderSrc));
+            const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
+            console.log(req.body.folderSrc);
+            return res.json({
+              ok: true,
+              msg: `FOLDER src=${req.body.folderSrc} DELETED sucessfully`,
+              routes
             });
         }catch(err){
             res.status(500).json({
@@ -146,6 +189,13 @@ class FileController extends BaseController {
             })
         }
         
+    }
+
+
+    getDirFromFileRoute(route){
+        let splittedRoute =  route.split('/');
+        splittedRoute.pop();
+        return splittedRoute.join('/');
     }
 
 }

@@ -8,7 +8,8 @@ const router = Router();
 router.use(expressFileUpload());
 
 /*************************************************************** 
-                      PUT: /upload
+                       PUT: /upload
+         * Sube un archivo al directorio indicado *
 ****************************************************************/
 router.put('/',
   [
@@ -21,7 +22,6 @@ router.put('/',
 
 /*************************************************************** 
                       GET: /upload/list
-
                   * Gets all images in DB *
 ****************************************************************/
   router.get('/list',
@@ -35,7 +35,6 @@ router.put('/',
 
 /*************************************************************** 
                   GET: /upload/list/:folder
-
                * Gets all images from a folder *
 ****************************************************************/
 router.get('/list/:folder',
@@ -47,9 +46,8 @@ router.get('/list/:folder',
 controller.listByFolder);
 
 /*************************************************************** 
-                  GET: /upload/structure
-
-               * Gets all images from a folder *
+                  POST: /upload/structure
+  * Carga la estructura de directorios a partir de la raíz indicada *
 ****************************************************************/
 router.post('/structure',
 [
@@ -60,19 +58,45 @@ router.post('/structure',
 controller.getFolderStructure);
 
 
+/*************************************************************** 
+                      POST: /upload/folder
+      Crea un directorio en la ruta indicada en la petición
+****************************************************************/
+router.post('/folder',
+  [
+    // check('email', 'email is required').isEmail(),
+    // check('password', 'password is required').not().isEmpty(),
+    // validateFields
+  ],
+  controller.createFolder);
+
+
 
 
 /*************************************************************** 
-                  DELETE: /upload/:uid
-
-               * Gets all images from a folder *
+                  DELETE: /upload/file/:uid
+        * Borra una imagen por su uid en BD *
 ****************************************************************/
-router.delete('/:uid',
+router.delete('/file/:uid',
 [
   // check('email', 'email is required').isEmail(),
   // check('password', 'password is required').not().isEmpty(),
   // validateFields
 ],
 controller.deleteFile);
+
+
+
+/*************************************************************** 
+                  PUT: /upload/folder
+  * Borra un directorio de la ruta indicada por la petición *
+****************************************************************/
+router.put('/folder',
+[
+  // check('email', 'email is required').isEmail(),
+  // check('password', 'password is required').not().isEmpty(),
+  // validateFields
+],
+controller.deleteFolder);
 
 module.exports = router;

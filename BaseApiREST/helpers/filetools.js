@@ -24,53 +24,62 @@ deleteFile = (filePath) => {
     }
 }
 
-// walkSync = (dir, filelist) => {
-//     var path = path || require('path');
-//     var fs = fs || require('fs'),
-//         files = fs.readdirSync(dir);
-//     filelist = filelist || [];
-//     files.forEach(function(file) {
-//         if (fs.statSync(path.join(dir, file)).isDirectory()) {
-//             filelist = walkSync(path.join(dir, file), filelist);
-//         }
-//         else {
-//             filelist.push(path.join(dir, file));
-//         }
-//     });
-//     console.log(filelist);
-//     return filelist;
-// };
+createFolder = (folderPath) => {
+    console.log(folderPath);
+    try{
+        if (!fs.existsSync(folderPath)){
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
+    }catch(err){
+        console.log("Error creating folder" + err);
+    }
+}
 
+deleteFolder = (folderPath) => {
+    console.log(folderPath);
+    try{
+        fs.rmSync(folderPath, { recursive: true });
+    }catch(err){
+        console.log("Error deleting folder" + err);
+    }
+}
 
 buildTree = (rootPath) => {
-    console.log("Build tree called");
-    const root = new TreeNode(rootPath);
-    console.log(root);
-    const stack = [root];
-  
-    while (stack.length) {
-      const currentNode = stack.pop();
-      console.log("current node", currentNode);
-  
-      if (currentNode) {
-        const children = fs.readdirSync(currentNode.path);
-  
-        for (let child of children) {
-          const childPath = `${currentNode.path}/${child}`;
-          const childNode = new TreeNode(childPath);
-          currentNode.children.push(childNode);
-  
-          if (fs.statSync(childNode.path).isDirectory()) {
-            stack.push(childNode);
+    //console.log("Build tree called");
+    if (fs.existsSync(rootPath)){
+        const root = new TreeNode(rootPath);
+        //console.log(root);
+        const stack = [root];
+      
+        while (stack.length) {
+          const currentNode = stack.pop();
+          //console.log("current node", currentNode);
+      
+          if (currentNode) {
+            const children = fs.readdirSync(currentNode.path);
+      
+            for (let child of children) {
+              const childPath = `${currentNode.path}/${child}`;
+              const childNode = new TreeNode(childPath);
+              currentNode.children.push(childNode);
+      
+              if (fs.statSync(childNode.path).isDirectory()) {
+                stack.push(childNode);
+              }
+            }
           }
         }
-      }
+        // console.log(root);
+        return root;
+    }else{
+        console.log("Deprecated route");
     }
-    // console.log(root);
-    return root;
+
   }
 
 module.exports = {
     deleteFile,
-    buildTree
+    buildTree,
+    createFolder,
+    deleteFolder
 }
