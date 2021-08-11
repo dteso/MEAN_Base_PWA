@@ -101,7 +101,7 @@
     <hr>
     <div *ngFor="let file of dbFiles" style="color: white;" class="row">
         <div class="col-3" style="text-align: left;">
-            <strong>{{file.name}}</strong>
+            <strong>{{file.name | ellipsis }}</strong>
         </div>
         <div class="col-3">
             <p>/{{file.folder}}</p>
