@@ -16,5 +16,17 @@
         "ACTION":{
             "UPLOAD": "Subir Fichero"
         }
+    },
+    "FILE": {
+        "DELETE": {
+            "SUCCESS": "Archivo borrado correctamente"
+        },
+        "UPLOAD":{
+            "SUCCESS": "Archivo subido correctamente"
+        },
+        "FOLDER_DELETE":{
+            "SUCCESS": "Carpeta borrada correctamente"
+        }        
     }
+
 }

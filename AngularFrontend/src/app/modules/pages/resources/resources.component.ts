@@ -83,7 +83,7 @@ export class ResourcesComponent implements OnInit {
       console.log("Imagen subida: " + img);
       this.imgTemp = undefined;
       this.fileToUpload = undefined;
-      this.showPrompt(this.translateService.instant('FILE.UPLOAD.SUCESS'));
+      this.showPrompt(this.translateService.instant('FILE.UPLOAD.SUCCESS'));
       this.fileUploadService.getFilesByFolder(terminalCurrentFolder).subscribe(res => {
         this.dbFiles = res.dbFiles;
         this.dbFiles.map(file => file.src = this.getTruePath(file.src));
@@ -97,7 +97,8 @@ export class ResourcesComponent implements OnInit {
   /* borra un archivo */
   deleteFile(id) {
     this.fileUploadService.deleteFile(id).subscribe(res => {
-      this.showPrompt(this.translateService.instant('FILE.DELETE.SUCESS'));
+      this.showPrompt(this.translateService.instant('FILE.DELETE.SUCCESS'));
+      this.routes = res.routes.children;
       this.fileUploadService.getFilesByFolder(this.currentPath).subscribe(res => {
         this.dbFiles = res.dbFiles;
         this.dbFiles.map(file => file.src = this.getTruePath(file.src));
@@ -121,7 +122,7 @@ export class ResourcesComponent implements OnInit {
         if (resultado.value) {
           let nombre = resultado.value;
           this.fileUploadService.createFolder(`${path}/${nombre}`).subscribe(res => {
-            this.showPrompt(this.translateService.instant('FILE.FOLDER_CREATE.SUCESS'));
+            this.showPrompt(this.translateService.instant('FILE.FOLDER_CREATE.SUCCESS'));
             this.routes = res.routes.children;
             Swal.fire(`Folder ${nombre} created!!!`.trim(), '', 'success');
           });
@@ -132,7 +133,7 @@ export class ResourcesComponent implements OnInit {
   /* borra una carpeta */
   deleteFolder(path) {
     this.fileUploadService.deleteFolder(`${path}`).subscribe(res => {
-      this.showPrompt(this.translateService.instant('FILE.FOLDER_DELETE.SUCESS'));
+      this.showPrompt(this.translateService.instant('FILE.FOLDER_DELETE.SUCCESS'));
       this.routes = res.routes.children;
       this.currentPath = this.getDirFromFileRoute(path);
     });

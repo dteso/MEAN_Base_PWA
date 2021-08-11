@@ -83,7 +83,7 @@ class FileController extends BaseController {
 
     listFiles = async (req, res)=>{
         try{
-            const dbFiles = await File.find({}); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
+            const dbFiles = await File.find({}); 
             const routes = buildTree('./shared');
             logger(`SUCCESS - FILES were LOADED`);
             res.json({
@@ -110,7 +110,8 @@ class FileController extends BaseController {
             if(folder === 'shared'){
                 routes = buildTree('./shared');
             }
-            const dbFiles = await File.find({ folder }); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
+            //TODO: Devolver routas por ruta real. Esto implica cambiar la petición a un post y el folder en el body
+            const dbFiles = await File.find({ folder }); 
             logger(`SUCCESS - FILES from folder ${folder} LOADED`);
             res.json({
               ok: true,

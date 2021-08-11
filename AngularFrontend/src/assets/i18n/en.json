@@ -16,5 +16,17 @@
         "ACTION":{
             "UPLOAD": "Upload File"
         }
+    },
+    "FILE": {
+        "DELETE": {
+            "SUCCESS": "File deleted succesfully"
+        },
+        "UPLOAD":{
+            "SUCCESS": "File uploaded succesfully"
+        },
+        "FOLDER_DELETE":{
+            "SUCCESS": "Foldet deleted successfully"
+        }        
     }
+
 }
