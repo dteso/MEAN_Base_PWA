@@ -11,7 +11,6 @@ const router = Router();
 /*************************************************************** 
                       POST: /api/login
 ****************************************************************/
-//router.post('/', createUser); //router.post('/', [{ mmiddleware1 }, { middleware2 }], createUser);
 router.post('/',
   [
     check('email', 'email is required').isEmail(),
@@ -24,7 +23,6 @@ router.post('/',
   /*************************************************************** 
                       POST: /api/login/google
 ****************************************************************/
-//router.post('/', createUser); //router.post('/', [{ mmiddleware1 }, { middleware2 }], createUser);
 router.post('/google',
 [
   check('id_token').not().isEmpty(),

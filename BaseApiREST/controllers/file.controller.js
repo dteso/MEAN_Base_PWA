@@ -2,7 +2,8 @@ const { response } = require('express');
 const File = require('../models/file.model');
 const { BaseController } = require('./base.controller');
 const { v4: uuidv4 } = require('uuid');
-const { deleteFile, buildTree } = require('../helpers/filetools');
+const { deleteFile, buildTree, createFolder, deleteFolder } = require('../helpers/filetools');
+const { logger } = require('../helpers/logger');
 
 class FileController extends BaseController {
 
@@ -14,6 +15,7 @@ class FileController extends BaseController {
     uploadFile = async (req, res) => {
         try{
             if (!req.files || Object.keys(req.files).length === 0) {
+                logger(`! ERROR :  'No file selected'`);
                 return res.status(400).json({
                     ok: false,
                     msg: 'No file selected'
@@ -31,6 +33,7 @@ class FileController extends BaseController {
             //Validar extension
             const validExtensions = ['png', 'jpg', 'jpeg', 'png', 'gif', 'pdf'];
             if (!validExtensions.includes(extension)) {
+                logger(`! ERROR : 'No extension allowed'`);
                 return res.status(400).json({
                     ok: false,
                     msg: 'No extension allowed'
@@ -52,12 +55,14 @@ class FileController extends BaseController {
             // Use the mv() method to place the file somewhere on your server
             file.mv(path, async (err) => {
                 if (err){
+                    logger(`! ERROR : ${err}`);
                     return res.status(500).json({
                         ok: false,
                         msg: `Error copying file ${err}`
                     });
                 }
                 let dbFile =  await objectFile.save();
+                logger(`File ${fileName} Uploaded`);
                 res.json({
                     ok: true,
                     msg: `SUCCESS - File ${fileName} Uploaded`,
@@ -65,6 +70,7 @@ class FileController extends BaseController {
                 })
             });
         }catch(err){
+            logger(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: `Error during upload process ${err}`
@@ -76,36 +82,53 @@ class FileController extends BaseController {
 
 
     listFiles = async (req, res)=>{
-        console.log("FILES GET REQUEST");
-        const dbFiles = await File.find({}); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
-        const routes = buildTree('./shared');
-        res.json({
-          ok: true,
-          msg: `FILES were LOADED sucessfully`,
-          dbFiles,
-          routes
-        });
+        try{
+            const dbFiles = await File.find({}); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
+            const routes = buildTree('./shared');
+            logger(`SUCCESS - FILES were LOADED`);
+            res.json({
+              ok: true,
+              msg: `FILES were LOADED sucessfully`,
+              dbFiles,
+              routes
+            });
+        }catch(err){
+            logger(`! ERROR : ${err}`);
+            res.json({
+                ok: false,
+                msg: `err`,
+              });
+        }
+
     }
 
 
     listByFolder = async (req, res)=>{
-        console.log("FILE BY FOLDER GET REQUEST");
-        const folder = req.params.folder;
-        let routes = [];
-        if(folder === 'shared'){
-            routes = buildTree('./shared');
+        try{
+            const folder = req.params.folder;
+            let routes = [];
+            if(folder === 'shared'){
+                routes = buildTree('./shared');
+            }
+            const dbFiles = await File.find({ folder }); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
+            logger(`SUCCESS - FILES from folder ${folder} LOADED`);
+            res.json({
+              ok: true,
+              msg: `FILES from folder <${folder}> were LOADED sucessfully`,
+              dbFiles,
+              routes
+            });
+        }catch(err){
+            logger(`! ERROR : ${err}`);
+            res.json({
+                ok: false,
+                msg: `err`,
+              });
         }
-        const dbFiles = await File.find({ folder }); //Sería como establecer su propio Dto sin necesidad de definirlo. Nos seguiría saliendo el _id y la __v. Esto se soluciona en el user.model.js
-        res.json({
-          ok: true,
-          msg: `FILES from folder <${folder}> were LOADED sucessfully`,
-          dbFiles,
-          routes
-        });
+
     }
 
     deleteFile = async (req,res) => {
-        console.log("FILE DELETE REQUEST");
         try{
             const uid = req.params.uid;
             const dbFile = await File.findById(uid);
@@ -118,6 +141,7 @@ class FileController extends BaseController {
             await deleteFile(dbFile.src);
             await File.findByIdAndDelete(uid);
             const routes = buildTree(this.getDirFromFileRoute(dbFile.src));
+            logger(`SUCCESS - File uid=${uid} DELETED sucessfully`);
             return res.json({
               ok: true,
               msg: `File uid=${uid} DELETED sucessfully`,
@@ -125,6 +149,7 @@ class FileController extends BaseController {
               routes
             });
         }catch(err){
+            logger(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -135,16 +160,17 @@ class FileController extends BaseController {
 
     
     createFolder = async (req,res) => {
-        console.log("FOLDER CREATE REQUEST");
         try{
             await createFolder(req.body.folderSrc);
             const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
+            logger(`SUCCESS - Folder src=${req.body.folderSrc} CREATED sucessfully`);
             return res.json({
               ok: true,
               msg: `Folder src=${req.body.folderSrc} CREATED sucessfully`,
               routes
             });
         }catch(err){
+            logger(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -154,18 +180,18 @@ class FileController extends BaseController {
     }
 
     deleteFolder = async (req,res) => {
-        console.log("FOLDER DELETE REQUEST");
         try{
             await deleteFolder(req.body.folderSrc);
-            console.log("--------------->", this.getDirFromFileRoute(req.body.folderSrc));
             const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
             console.log(req.body.folderSrc);
+            logger(`SUCCESS - FOLDER src=${req.body.folderSrc} DELETED sucessfully`);
             return res.json({
               ok: true,
               msg: `FOLDER src=${req.body.folderSrc} DELETED sucessfully`,
               routes
             });
         }catch(err){
+            logger(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -178,11 +204,13 @@ class FileController extends BaseController {
         const root = req.body.path;
         try{
             const routes = buildTree(root);
+            logger(`SUCCESS - build tree loaded`);
             res.json({
                 ok: true,
                 paths: routes
             })
         }catch(err){
+            logger(`! ERROR : ${err}`);
             res.status(400).json({
                 ok: false,
                 error: err

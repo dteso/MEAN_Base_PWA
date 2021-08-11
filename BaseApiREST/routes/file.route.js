@@ -2,6 +2,7 @@ const { Router } = require('express');
 const expressFileUpload = require('express-fileupload');
 
 const { FileController } = require('../controllers/file.controller');
+const { validateJWT } = require('../middlewares/validate-jwt');
 const controller = new FileController();
 
 const router = Router();
@@ -13,9 +14,7 @@ router.use(expressFileUpload());
 ****************************************************************/
 router.put('/',
   [
-    // check('email', 'email is required').isEmail(),
-    // check('password', 'password is required').not().isEmpty(),
-    // validateFields
+    validateJWT
   ],
   controller.uploadFile);
 
@@ -26,9 +25,7 @@ router.put('/',
 ****************************************************************/
   router.get('/list',
   [
-    // check('email', 'email is required').isEmail(),
-    // check('password', 'password is required').not().isEmpty(),
-    // validateFields
+    validateJWT
   ],
   controller.listFiles);
 
@@ -39,9 +36,7 @@ router.put('/',
 ****************************************************************/
 router.get('/list/:folder',
 [
-  // check('email', 'email is required').isEmail(),
-  // check('password', 'password is required').not().isEmpty(),
-  // validateFields
+  validateJWT
 ],
 controller.listByFolder);
 
@@ -51,9 +46,7 @@ controller.listByFolder);
 ****************************************************************/
 router.post('/structure',
 [
-  // check('email', 'email is required').isEmail(),
-  // check('password', 'password is required').not().isEmpty(),
-  // validateFields
+  validateJWT
 ],
 controller.getFolderStructure);
 
@@ -64,9 +57,7 @@ controller.getFolderStructure);
 ****************************************************************/
 router.post('/folder',
   [
-    // check('email', 'email is required').isEmail(),
-    // check('password', 'password is required').not().isEmpty(),
-    // validateFields
+    validateJWT
   ],
   controller.createFolder);
 
@@ -79,9 +70,7 @@ router.post('/folder',
 ****************************************************************/
 router.delete('/file/:uid',
 [
-  // check('email', 'email is required').isEmail(),
-  // check('password', 'password is required').not().isEmpty(),
-  // validateFields
+  validateJWT
 ],
 controller.deleteFile);
 
@@ -93,9 +82,7 @@ controller.deleteFile);
 ****************************************************************/
 router.put('/folder',
 [
-  // check('email', 'email is required').isEmail(),
-  // check('password', 'password is required').not().isEmpty(),
-  // validateFields
+  validateJWT
 ],
 controller.deleteFolder);
 
