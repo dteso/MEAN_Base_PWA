@@ -4,12 +4,13 @@ import { FileuploadService } from 'src/app/services/fileupload/fileupload.servic
 import { ResourcesComponent } from './resources.component';
 import { ResourcesRoutingModule } from './resources-routing.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { GetFolderNamePipe } from 'src/app/utils/pipes/getFolderName/get-folder-name.pipe';
+import { GetFolderNamePipe } from 'src/app/utils/pipes/get-folder-name.pipe';
+import { EllipsisPipe } from 'src/app/utils/pipes/ellipsis.pipe';
 
 
 
 @NgModule({
-  declarations: [ResourcesComponent, GetFolderNamePipe],
+  declarations: [ResourcesComponent, GetFolderNamePipe, EllipsisPipe],
   imports: [
     CommonModule,
     ResourcesRoutingModule,
