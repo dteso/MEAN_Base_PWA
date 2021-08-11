@@ -66,10 +66,10 @@
         <hr style="color: silver;">
 
         <!-- Directory tree -->
-        <div *ngFor="let route of routes" class="row mt-1 animated flipInX" (click)="getTreeNode(route.path)">
+        <div *ngFor="let route of routes" class="row mt-1 animated flipInX">
             <div class="col"
                 style="color: white; text-align: left; font-size: larger; background-color: rgb(9, 143, 240); opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
-                *ngIf="!verifyIfIsFile(route.path)"><i class="fa fa-folder p-2"></i>{{route.path | getFolderName}}</div>
+                *ngIf="!verifyIfIsFile(route.path)" (click)="getTreeNode(route.path)"><i class="fa fa-folder p-2"></i>{{route.path | getFolderName}}</div>
             <div style="color: white; text-align: left; font-size: larger; opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
                 *ngIf="verifyIfIsFile(route.path)"><i class="fa fa-file p-2"></i>{{route.path}}</div>
             <div *ngIf="!verifyIfIsFile(route.path)" class="col-1 mt-3"
