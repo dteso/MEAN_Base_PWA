@@ -37,7 +37,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     const token = this.storage.getItem('USER')?.token;
     if (token) {
       request = request.clone({
-        headers: request.headers.set('Authorization', `Bearer ${token}`),
+        headers: request.headers.set('x-token', `${token}`),
       });
     }
     request = request.clone({

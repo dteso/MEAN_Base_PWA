@@ -25,9 +25,9 @@ export class FileuploadService {
       formData.append('folder', folder);
       const resp =  await fetch(url, {
         method: 'PUT',
-        // headers:{
-        //   'x-token': this.storage.getItem('USER').token;
-        // },
+        headers:{
+          'x-token': this.storage.getItem('USER').token
+        },
         body: formData
       });
       const data = await resp.json();
