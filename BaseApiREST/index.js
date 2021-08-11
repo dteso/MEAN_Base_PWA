@@ -15,6 +15,7 @@ app.use(cors());
 //PARSEO DEL BODY
 app.use(express.json());
 
+app.use('/api/shared/protected/*', require('./routes/shared.route')); //De esta forma habilitamos una ruta protegida por autenticación al estar servida en la carpeta publica /shared
 appShared.use('/shared', express.static('shared'));
 app.use('/api', appShared);
 
