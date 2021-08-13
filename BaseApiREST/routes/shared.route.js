@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const { validateJWT } = require('../middlewares/validate-jwt');
+const { validateJWT, validateJWTforProtectedRoute } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
 router.all('/', 
 [
-    validateJWT
+    validateJWTforProtectedRoute
 ]
 ,( ) => {
     console.log("PROTECTED ROUTE REQUESTED")

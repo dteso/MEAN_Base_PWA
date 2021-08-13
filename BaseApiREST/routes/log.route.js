@@ -3,7 +3,7 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
-router.use('/', validateJWT, (req, res) => {
+router.use('/', validateJWT , (req, res) => {
     res.download(`./shared/protected/log.txt`,  (err)=>{
         if (err) {
             console.log("ERROR: " + err);

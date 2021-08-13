@@ -1,7 +1,10 @@
 {
     "MESSAGES": {
         "WELCOME": "Bienvenido",
-        "LOGOUT": "Cerrar sesión"
+        "LOGOUT": "Cerrar sesión",
+        "MAIL": {
+            "SENT": "Correo enviado"
+        }
     },
     "MENU":{
         "OPTIONS":{
