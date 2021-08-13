@@ -30,6 +30,16 @@
         "FOLDER_CREATE":{
             "SUCCESS": "Folder created successfully"
         }                
+    },
+    "MODALS": {
+        "MAIL":{
+            "TITLE": "Send us an e-mail",
+            "SUBJECT": "Subject",
+            "BODY": "Your message here...",
+            "MESSAGE": "Message",
+            "SUBJECT_REQUIRED": "Subject is required",
+            "MESSAGE_REQUIRED": "Message cannot be empty"
+        }
     }
 
 }

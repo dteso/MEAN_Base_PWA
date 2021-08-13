@@ -7,7 +7,7 @@ const user = window.sessionStorage['USER'];
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./modules/login/login.module').then( m => m.LoginModule)
+    loadChildren: () => import('./modules/pages/login/login.module').then( m => m.LoginModule)
   },
   {
     path: 'home',
@@ -16,7 +16,7 @@ const routes: Routes = [
     resolve: {
       data: HomeResolver
     },
-    loadChildren: () => import('./modules/home/home.module').then( m => m.HomeModule)
+    loadChildren: () => import('./modules/pages/home/home.module').then( m => m.HomeModule)
   },
   {
     path: 'skills',

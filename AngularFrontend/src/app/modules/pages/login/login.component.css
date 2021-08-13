@@ -41,8 +41,3 @@ label{
 .center{
   text-align: center;
 }
-
-.validation-message{
-  color: rgb(255, 0, 64); 
-  font-size: smaller;
-}

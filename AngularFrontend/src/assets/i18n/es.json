@@ -30,6 +30,16 @@
         "FOLDER_CREATE":{
             "SUCCESS": "Carpeta creada correctamente"
         }                
+    },
+    "MODALS": {
+        "MAIL":{
+            "TITLE": "Envianos un e-mail",
+            "SUBJECT": "Asunto",
+            "BODY": "Aquí su mensaje...",
+            "MESSAGE": "Mensaje",
+            "SUBJECT_REQUIRED": "Debe indicar un asunto",
+            "MESSAGE_REQUIRED": "El mensaje no debe estar vacío"
+        }
     }
 
 }
