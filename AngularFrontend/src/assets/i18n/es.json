@@ -26,7 +26,10 @@
         },
         "FOLDER_DELETE":{
             "SUCCESS": "Carpeta borrada correctamente"
-        }        
+        },
+        "FOLDER_CREATE":{
+            "SUCCESS": "Carpeta creada correctamente"
+        }                
     }
 
 }

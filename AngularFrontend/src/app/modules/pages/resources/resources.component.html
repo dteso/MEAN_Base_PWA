@@ -13,7 +13,7 @@
     </div>
 
     <ng-template #adviceBlock>
-        <div style=" background-color: rgb(250, 189, 189); opacity: 60%; padding: 3rem; font-weight: bolder;">
+        <div style="background-color: rgb(250, 189, 189); opacity: 60%; padding: 3rem; font-weight: bolder;">
             <h1 style="color: red;"><i class="fa fa-exclamation-triangle"></i> Server directories</h1>
             <p style="color: red;">No changes will be allowed in this directory tree. This is a tree view structure
                 project for develpment usage.</p>
@@ -51,15 +51,15 @@
         <!-- Options -->
         <div *ngIf="currentPath && currentPath.length && currentPath!=='.'" class="row flex-center mt-3"
             style="color: white; background-color: black; padding: 0.5rem;">
-            <div class="col" style="text-align: left; cursor: pointer;" (click)="onBackFolder()">
-                <i class="fa fa-arrow-left"></i> Back
+            <div class="col" style="text-align: left; cursor: pointer;" (click)="onBackFolder()" title="Back">
+                <i class="fa fa-arrow-left" style="font-size: 1.5rem;"></i> 
             </div>
             <div class="col contents-right">
-                <div style="cursor: pointer; margin-left: 2rem;" (click)="onShowFileInput()">
-                    <i class="fa fa-upload"></i>
+                <div style="cursor: pointer; margin-left: 2rem;" (click)="onShowFileInput()" title="Upload File">
+                    <i class="fa fa-upload" style="font-size: 1.5rem;"></i>
                 </div>
-                <div style="cursor: pointer; margin-left: 2rem;" (click)="createFolder(currentPath)">
-                    <i class="fa fa-folder"></i>
+                <div style="cursor: pointer; margin-left: 2rem;" (click)="createFolder(currentPath)" title="Create Folder">
+                    <i class="fa fa-folder" style="font-size: 1.5rem;"></i>
                 </div>
             </div>
         </div>
@@ -67,12 +67,12 @@
 
         <!-- Directory tree -->
         <div *ngFor="let route of routes" class="row mt-1 animated flipInX">
-            <div class="col"
-                style="color: white; text-align: left; font-size: larger; background-color: rgb(9, 143, 240); opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
-                *ngIf="!verifyIfIsFile(route.path)" (click)="getTreeNode(route.path)"><i class="fa fa-folder p-2"></i>{{route.path | getFolderName}}</div>
+            <div class="col folder" *ngIf="!verifyIfIsFile(route.path)" (click)="getTreeNode(route.path)"><i class="fa fa-folder p-2"></i>{{route.path | getFolderName}}</div>
+
             <div style="color: white; text-align: left; font-size: larger; opacity: 70%; padding: 1rem; cursor: pointer; border-radius: 1%"
-                *ngIf="verifyIfIsFile(route.path)"><i class="fa fa-file p-2"></i>{{route.path}}</div>
-            <div *ngIf="!verifyIfIsFile(route.path)" class="col-1 mt-3"
+                *ngIf="verifyIfIsFile(route.path) && !isImage(route.path)"><i class="fa fa-file p-2"></i>{{route.path}}</div> <!-- por el momento sólo vamos a querer listar los archivos que no sean imágen pues los mostramos de otro modo ya-->
+
+            <div *ngIf="!verifyIfIsFile(route.path) && currentPath && currentPath.length && currentPath!=='.'" class="col-1 mt-3"
                 style="color: rgb(231, 132, 3); cursor: pointer; font-size: 1.5rem;" (click)="deleteFolder(route.path)">
                 <i class="fa fa-trash"></i></div>
         </div>
@@ -85,7 +85,7 @@
     </div> -->
     <div *ngIf="dbFiles && dbFiles.length" class="row mt-2"
         style="color: white; font-weight: bolder; background: black; opacity: 60%; padding-top: 0.5rem;">
-        <div class="col-3" style="text-align: left;">
+        <div class="col-4" style="text-align: left;">
             <strong>File</strong>
         </div>
         <div class="col-3">
@@ -94,22 +94,22 @@
         <div class="col-3">
             Image
         </div>
-        <div class="col-3">
+        <div class="col-2">
             Action
         </div>
     </div>
     <hr>
     <div *ngFor="let file of dbFiles" style="color: white;" class="row">
-        <div class="col-3" style="text-align: left;">
+        <div class="col-4" style="text-align: left;">
             <strong>{{file.name | ellipsis }}</strong>
         </div>
         <div class="col-3">
             <p>/{{file.folder}}</p>
         </div>
-        <div class="col-3">
+        <div class="col-3" style="cursor: pointer;"  (click)="showImage(file.src)">
             <img (load)="setLoaded()" [src]="file.src" width="35rem" height="35rem" />
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <i style="cursor: pointer;" class="fa fa-trash" (click)="deleteFile(file.uid)"></i>
         </div>
         <hr>

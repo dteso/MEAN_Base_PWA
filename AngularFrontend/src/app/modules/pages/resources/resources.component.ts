@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from 'src/app/services/api/api.service';
 import { FileuploadService } from 'src/app/services/fileupload/fileupload.service';
 import { LoaderService } from 'src/app/services/loader/loader.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+
+const BASE_PATH = './shared';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -37,13 +41,17 @@ export class ResourcesComponent implements OnInit {
   showFileInput = false;
   routes = [];
 
-  previousFolder = './shared';
-  currentPath = './shared';
+  previousFolder = BASE_PATH;
+  currentPath = BASE_PATH;
+
+  stream;
 
   constructor(
     private readonly fileUploadService: FileuploadService,
     private readonly translateService: TranslateService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly storage: StorageService,
+    private readonly apiService: ApiService
   ) {
     this.loaderService._loading$.next(true);
   }
@@ -124,7 +132,7 @@ export class ResourcesComponent implements OnInit {
           this.fileUploadService.createFolder(`${path}/${nombre}`).subscribe(res => {
             this.showPrompt(this.translateService.instant('FILE.FOLDER_CREATE.SUCCESS'));
             this.routes = res.routes.children;
-            Swal.fire(`Folder ${nombre} created!!!`.trim(), '', 'success');
+            // Swal.fire(`Folder ${nombre} created!!!`.trim(), '', 'success');
           });
         }
       });
@@ -207,6 +215,21 @@ export class ResourcesComponent implements OnInit {
     let splittedRoute =  route.split('/');
     splittedRoute.pop();
     return splittedRoute.join('/');
-}
+  }
+
+  isImage(path):Boolean{
+    const imageExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+    let extension = ((path.substring(BASE_PATH.length, path.length)).split('.'))[(path.substring(BASE_PATH.length, path.length)).split('.').length - 1];
+    return imageExtensions.includes(extension);
+  }
+
+  showImage(path){
+    Swal.fire({
+      imageUrl: path,
+      imageWidth: 400,
+      imageAlt: 'Custom image',
+      showConfirmButton: false
+    })
+  }
 
 }

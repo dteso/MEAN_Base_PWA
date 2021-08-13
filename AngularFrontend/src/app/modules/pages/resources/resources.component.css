@@ -2,11 +2,19 @@
     color: white;
     text-align: left;
     font-size: larger;
-    background-color: rgb(126, 126, 5);
+    background-color: rgb(9, 143, 240);
     opacity: 70%;
     padding: 1rem;
     cursor: pointer;
-    border-radius: 3%;
+    border-radius: 1%;
+}
+
+.folder:hover{
+    background-color: rgb(3, 74, 124);
+}
+
+i:hover{
+    font-size: 1.6rem !important;
 }
 
 .file{
@@ -25,3 +33,4 @@
     text-align: right; 
     display: contents;
 }
+

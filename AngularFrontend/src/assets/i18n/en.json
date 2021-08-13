@@ -25,8 +25,11 @@
             "SUCCESS": "File uploaded succesfully"
         },
         "FOLDER_DELETE":{
-            "SUCCESS": "Foldet deleted successfully"
-        }        
+            "SUCCESS": "Folder deleted successfully"
+        },
+        "FOLDER_CREATE":{
+            "SUCCESS": "Folder created successfully"
+        }                
     }
 
 }
