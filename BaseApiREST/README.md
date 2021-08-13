@@ -124,3 +124,25 @@ como el data es un array de objetos, incluiremos a primer nivel del array tantos
 
 
  
+### SOCKETS
+
+      npm i socket.io
+
+En este caso van a convivir tanto el api REST como el socket server, de forma que vamos a asignarles distintos puertos para la misma url:
+
+- Api 3000
+- Sockets 5000
+
+npm i chalk ---> PAra mensajes personalizados por consola ( Se incluye para test. Susceptible se ser removida TEST )
+
+A la hora de definir la interfaz del socket habrá que hacerlo aportando la url del cliente desde el que se emite el evento:
+
+    const io = require('socket.io')(server, {
+      cors: {
+        origins: ['http://192.168.1.41:4200']
+      }
+    });
+
+Si no se aporta se visualizará en el navegador el error:
+
+    Socket.IO y Angular has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource

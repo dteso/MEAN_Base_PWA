@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { startSockets } = require('./socket-server');
 
 const express = require('express');
 const cors = require('cors');
@@ -29,6 +30,8 @@ app.use('/api/login', require('./routes/auth.route'));
 app.use('/api/dispatcher/mail', require('./routes/dispatcher.route'));
 app.use('/api/notifications', require('./routes/newsletter.route'));
 app.use('/api/upload', require('./routes/file.route'));
+
+startSockets(app);
 
 app.listen(process.env.PORT, () => {
   console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);

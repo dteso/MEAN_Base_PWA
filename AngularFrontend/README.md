@@ -57,3 +57,32 @@ api_url: "http://localhost:3000/api"
         })
 
     Necesitamos un backend que emita una notificacion
+
+
+
+### SOCKETS
+
+        npm i ngx-socket-io --save
+        npm i ngx-cookie-service --save
+
+Se va a utilizar un servicio propio WebSocket que va a:
+
+- Extender de Sockets, permitiendonos utilizar la instancia ioSocket de la clase WrappedSocket
+- En su constructor a traves de super definimos la url a la que va a atacar el cliente y con que payload
+    super({
+      url: environment.server_socket, 
+      options: {
+        query: {
+          payload: `{"id":"${Math.floor(Math.random()*10)}","user":"new_user"}` // ---> Podría ser el usuario del storage o una cookie por ejemplo. Esto es lo que va a llegar en el callbak del backend :  let {payload} = socket.handshake.query;                                                                //     Siempre debe ser un string
+          },                                                                         
+      }
+    });
+
+- SUBSCRIPCIÓN on('nombre_del_canal', res => contenido recibido): ----> Desde el backend se habrá ejecutado un socket.emit('nombre_del_canal', contenido a enviar )
+    this.ioSocket.on('message', res => {
+      console.log(res.msg);
+      this.outEven.emit(res);  ---> OPCIONAL: En nuestro caso tenemos un @Output por si quisieramos escuchar este evento en el padre
+    });
+
+- PUBLICACIÓN emit() ---> Desde el backend se escuchará desde un socket.on('nombre_del_canal', contenido a enviar )
+    this.ioSocket.emit('default', {payload}); ---> A qué canal que esté escuchando en el server se le publica el payload
