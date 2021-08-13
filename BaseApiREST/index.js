@@ -26,7 +26,7 @@ dbConnection();
 app.use('/api/log', require('./routes/log.route'));
 app.use('/api/users', require('./routes/user.route'));
 app.use('/api/login', require('./routes/auth.route'));
-app.use('/dispatcher/alarm', require('./routes/dispatcher.route'));
+app.use('/api/dispatcher/mail', require('./routes/dispatcher.route'));
 app.use('/api/notifications', require('./routes/newsletter.route'));
 app.use('/api/upload', require('./routes/file.route'));
 

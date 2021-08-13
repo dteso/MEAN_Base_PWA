@@ -5,8 +5,9 @@ const { sendCustomMail } = require('../helpers/mail');
 class DispatcherController extends BaseController {
 
     sendMail = async (req, res) => {
+        const {to ,subject, body} = req.body;
         try{
-            sendCustomMail('MY SYSTEM', 'dtesodev@gmail.com', 'INTRUSIÓN DETECTADA', 'Se ha detectado un salto de alarma, por favor, revise su App');
+            sendCustomMail('MY SYSTEM', to, subject, body);
             console.log("Enviado Email de aviso");
             res.json({
                 ok: true,
