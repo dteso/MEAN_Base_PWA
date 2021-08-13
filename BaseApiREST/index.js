@@ -23,6 +23,7 @@ app.use('/api', appShared);
 dbConnection();
 
 //RUTAS
+app.use('/api/log', require('./routes/log.route'));
 app.use('/api/users', require('./routes/user.route'));
 app.use('/api/login', require('./routes/auth.route'));
 app.use('/dispatcher/alarm', require('./routes/dispatcher.route'));
