@@ -38,4 +38,11 @@ export class ApiService {
   deleteForm(path:string): Observable<any>{
     return this.http.delete(`${environment.api_url}/${path}`);
   }
+
+  download(path: string){
+    return this.http.get(path, {
+      responseType: 'blob'
+    });
+  }
+
 }
