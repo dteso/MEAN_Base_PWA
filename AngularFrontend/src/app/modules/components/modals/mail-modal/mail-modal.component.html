@@ -1,0 +1,40 @@
+    <div class="modal-header" style="background: -webkit-linear-gradient(-90deg, black 25%, rgb(9, 181, 187) 100%) !important; color: white">
+        <h4 class="modal-title" id="modal-basic-title"><i class="fa fa-envelope"></i> {{ 'MODALS.MAIL.TITLE' | translate }}</h4>
+        
+        <button type="button" class="btn btn-danger" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <i class="fa fa-close"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: rgb(4, 46, 75)">
+        <div class="container flex-center animated fadeIn">
+                <!-- <h1 class="card-title center">MAIL</h1> -->
+                  <form *ngIf="mailForm" [formGroup]="mailForm">
+                    <div class="mb-3">
+                      <label for="subjectInput" class="form-label">{{ 'MODALS.MAIL.SUBJECT' | translate }}</label>
+                      <input type="text" class="form-control" id="subjectInput" formControlName="subject" placeholder="{{ 'MODALS.MAIL.SUBJECT' | translate }}">
+                      <ng-container>
+                        <p class="validation-message" *ngIf="mailForm.controls.subject.errors && mailForm.controls.subject.errors.required && submitted">
+                            {{ 'MODALS.MAIL.SUBJECT_REQUIRED' | translate }}
+                        </p>
+                      </ng-container>
+                    </div>
+    
+                    <div class="mb-3">
+                      <label for="bodyInput" class="form-label">{{ 'MODALS.MAIL.MESSAGE' | translate }}</label>
+                      <textarea type="body" class="form-control" id="bodyInput" formControlName="body" placeholder="{{ 'MODALS.MAIL.BODY' | translate }}" style="min-height: 10rem;"></textarea>
+                      <ng-container>
+                        <p class="validation-message" *ngIf="mailForm.controls.body.errors && mailForm.controls.body.errors.required && submitted">
+                            {{ 'MODALS.MAIL.MESSAGE_REQUIRED' | translate }}
+                        </p>
+                      </ng-container>
+                    </div>
+                  </form>   
+              </div>
+      </div>
+      <div class="modal-footer" style="background-color: black;">
+        <div class="mt-1 w-100 center">
+            <button type="button" class="btn btn-info w-100" (click)="sendMail()">OK</button>
+          </div>
+        <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button> -->
+      </div> 
+

@@ -11,13 +11,14 @@ import { AuthService } from './services/auth/auth.service';
 import { SidebarModule } from './modules/layout/sidebar/sidebar.module';
 import { HeaderModule } from './modules/layout/header/header.module';
 import { ToolbarModule } from './modules/layout/toolbar/toolbar.module';
-import { LoginModule } from './modules/login/login.module';
+import { LoginModule } from './modules/pages/login/login.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { NewsletterService } from './services/newsletter/newsletter.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LoaderModule } from './utils/loader/loader.module';
+import { MailModalModule } from './modules/components/modals/mail-modal/mail-modal.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LoaderModule } from './utils/loader/loader.module';
     ToolbarModule,
     LoginModule,
     LoaderModule,
+    MailModalModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

@@ -49,3 +49,8 @@ h2, p, footer{
   filter: blur(100px);
   z-index: 1;
 }
+
+.validation-message{
+  color: rgb(255, 0, 64); 
+  font-size: smaller;
+}
