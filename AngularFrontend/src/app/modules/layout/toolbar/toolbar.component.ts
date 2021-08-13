@@ -1,5 +1,8 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/storage/storage.service';
+import { saveAs } from 'file-saver';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-toolbar',
@@ -12,22 +15,35 @@ export class ToolbarComponent implements OnInit {
   @Output() logout: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private router: Router
+    private router: Router,
+    private readonly storage: StorageService
   ) { }
 
   ngOnInit(): void {
   }
 
-  logoutSubmitted(){
+  logoutSubmitted() {
     this.logout.emit(true);
   }
 
-  navigateToHome(){
+  navigateToHome() {
     this.router.navigate(['home']);
   }
 
-  navigateInstagram(){
+  navigateInstagram() {
     window.location.href = 'https://www.instagram.com/sheizqui?utm_medium=copy_link';
   }
 
+  async downloadLog() {
+    await fetch(`${environment.api_url}/log`, {
+      method: 'GET',
+      headers:{
+        'x-token': this.storage.getItem('USER')?.token
+      },
+    }).then( res => {
+      res.body.getReader().read().then(val => {
+        saveAs( new Blob([val.value]), 'log.txt');
+      });
+    });
+  }
 }

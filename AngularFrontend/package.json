@@ -24,6 +24,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angularx-social-login": "^4.0.1",
+    "file-saver": "^2.0.5",
     "rxjs": "~6.6.0",
     "sweetalert2": "^11.0.19",
     "tslib": "^2.2.0",
