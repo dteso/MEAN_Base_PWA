@@ -1,10 +1,10 @@
-PWA
+   # PWA
 
 1. Enviroments
 
-enviroments/enviroment.prod.ts
+    enviroments/enviroment.prod.ts
 
-api_url: "http://localhost:3000/api"
+      api_url: "http://localhost:3000/api"
 
 2. ng buid
 
@@ -30,8 +30,7 @@ api_url: "http://localhost:3000/api"
   http-server -p 8080 -c-1 dist/login-app
 
 
-
-  ## PUSH NOTIFICATIONS
+  # PUSH NOTIFICATIONS
 
   La aplicación debe ya haber sido configurada como pwa
 
@@ -60,7 +59,7 @@ api_url: "http://localhost:3000/api"
 
 
 
-### SOCKETS
+ # SOCKETS
 
 Notas: Se ha implementado el uso de 2 librerías, haciendo uso finalmente socket.io-client. El motivo principal es la flexibilidad, ya que con ngx-socket debemos definir la conexión y el payload invocando al super de la
 clase Socket desde nuestro constructor. Esto nos limitaba y densificaba el código comparándolo con otra prueba de implementación con io-client en la que como se puede apreciar en el código del repositorio, la implementación con esta librería
