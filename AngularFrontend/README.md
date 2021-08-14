@@ -62,6 +62,16 @@ api_url: "http://localhost:3000/api"
 
 ### SOCKETS
 
+Notas: Se ha implementado el uso de 2 librerías, haciendo uso finalmente socket.io-client. El motivo principal es la flexibilidad, ya que con ngx-socket debemos definir la conexión y el payload invocando al super de la
+clase Socket desde nuestro constructor. Esto nos limitaba y densificaba el código comparándolo con otra prueba de implementación con io-client en la que como se puede apreciar en el código del repositorio, la implementación con esta librería
+es 100% flexible y dinámica, además de ser insultantemente sencilla.
+
+
+Se deja como referencia unas notas de cara a aquellos que deseen realizar el cambio de librería a ngx teniendo en cuenta las limitaciones comentadas:
+
+
+-- Con ngx
+
         npm i ngx-socket-io --save
         npm i ngx-cookie-service --save
 
@@ -86,3 +96,53 @@ Se va a utilizar un servicio propio WebSocket que va a:
 
 - PUBLICACIÓN emit() ---> Desde el backend se escuchará desde un socket.on('nombre_del_canal', contenido a enviar )
     this.ioSocket.emit('default', {payload}); ---> A qué canal que esté escuchando en el server se le publica el payload
+    
+
+-- Con io client
+
+        import { Injectable, EventEmitter, Output } from '@angular/core';
+        import { environment } from 'src/environments/environment';
+        import { io, Socket } from 'socket.io-client';
+
+        @Injectable()
+        export class SocketProviderConnect {
+        socket: Socket;
+
+        @Output() outEven: EventEmitter<any> = new EventEmitter();
+        constructor() {}
+
+        public get IoStatus(){
+            return this.socket? true: false;
+        }
+        
+        
+        onConnect(payload = {}){
+            try{
+            // conection ---> io(http://my_socket_server:port)
+            this.socket = io(environment.server_socket, payload);
+            }catch(err){
+            console.log("CONNECTION SOCKET SERVER ERROR "+ err);
+            }
+            this.listenEvent('message');
+        }
+
+        listenEvent(event){
+            try{
+            this.socket.on(event, res => {
+                console.log(res.msg);
+                this.outEven.emit(res);
+            });
+            }catch(err){
+            console.log("ERROR ON SUBSCRIPTION TO SOCKET SERVER "+ err);
+            }
+        }
+
+        emitEvent = (event = 'default', payload = {}) => {
+            try{
+            this.socket.emit( event, {payload} );
+            }catch(err){
+            console.log("ERROR EMMITING TO SOCKET SERVER "+ err);
+            }
+        }
+
+        }

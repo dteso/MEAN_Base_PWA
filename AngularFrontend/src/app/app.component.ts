@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     private newsletterService: NewsletterService,
     private readonly translate: TranslateService, //Don't remove needed in view for pipe
     private readonly loader: LoaderService,
-    protected socketService: SocketProviderConnect,
+    protected socketService: SocketProviderConnect
   ) {
 
     /* Translate initialization */
@@ -72,12 +72,13 @@ export class AppComponent implements OnInit {
     // Check authentication
       this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
     //Start connection socket
+    if(!this.socketService.IoStatus){
       this.socketService.onConnect({
         query: {
           payload: `{"room":"general","user":"${ this.storageService.getItem('USER')? this.storageService.getItem('USER').token : 'UNKNOWN'}"}`
-        },
-      }
-    );
+        }
+      });
+    }
     this.isCollapsed = true;
     // Emit message to default room
     this.socketService.emitEvent('default', 'Gerry Webber backs!');

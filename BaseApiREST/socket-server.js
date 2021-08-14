@@ -3,9 +3,9 @@
  * -------- socket io connection---------*/
 
 const { logger } =  require ('./helpers/logger')
+let current_users_count = 0;
 
 startSockets = (app) => {
-
     const server = require('http').Server(app)
     const io = require('socket.io')(server, {
       cors: {
@@ -24,6 +24,8 @@ startSockets = (app) => {
       let {payload} = socket.handshake.query; 
       console.log(`${chalk.blue(`Nuevo dispositivo conectado: ${id_handshake}`)}`);
       console.log('Adress: ' + socket.handshake.address);
+      current_users_count ++;
+      console.log(`${chalk.magenta(`CURRENT USERS ${current_users_count}`)}`);
     
       if (!payload) {
           console.log(`${chalk.red(`No payload`)}`);  
@@ -40,10 +42,18 @@ startSockets = (app) => {
            * --------- EMITIR -------------
            * Para probar la conexion con el dispositivo unico le emitimos un mensaje a el dispositivo conectado
            */
+
+          /* Se emite al cliente socket */
           socket.emit('message', {
               msg: `Hola tu eres el dispositivo >>> ${id_handshake} <<< perteneces a la sala [ ${payload.room.toUpperCase()} ]`
           });
-    
+
+
+          /* Se emite a todos los clientes */
+          socket.broadcast.emit('message', {
+              msg: `Un nuevo usuario accedió >>> ${id_handshake} <<< a la sala [ ${payload.room.toUpperCase()} ]`
+          })
+
           /**
            * ----------- ESCUCHAR -------------
            * Cuando el cliente nos emite un mensaje la api los escucha de la siguiente manera
@@ -53,14 +63,25 @@ startSockets = (app) => {
             logger(`New visitor from connection ${id_handshake}`);
           });
 
+          socket.on('home', function(res){
+            console.log(`${chalk.cyanBright(`>>>>> Received ${res.payload} on 'home' channel`)}`);
+            logger(`Visitor ${id_handshake} reached HOME`);
+          });
+
+
       };
     
       /**
        * Si un dispositivo se desconecto lo detectamos aqui
        */
-      socket.on('disconnect', function () {
-          console.log(`user ${id_handshake} logged out`);
-      });
+        socket.on('disconnect', function () {
+            console.log(`user ${id_handshake} logged out`);
+            current_users_count--;
+            console.log(`${chalk.magenta(`CURRENT USERS ${current_users_count}`)}`);
+            socket.broadcast.emit('message', {
+                msg: `El usuario >>> ${id_handshake} salió`
+            })
+        });
     });
     
     /* Socket server */

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { User } from 'src/app/models/user.model';
 import { TranslateService } from '@ngx-translate/core';
+import { SocketProviderConnect } from 'src/app/services/web-socket.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    protected socketService: SocketProviderConnect
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +35,8 @@ export class HomeComponent implements OnInit {
       const routeData: any = data;
       //console.log("DATA in resolver: " + JSON.stringify(routeData));
       Object.assign(this.user ,JSON.parse(routeData.data).user);
-      //console.log(this.user);
+      if(this.socketService.IoStatus)
+        this.socketService.emitEvent('home', JSON.stringify(this.user.name));
     });
   }
   

@@ -9,24 +9,38 @@ export class SocketProviderConnect {
   @Output() outEven: EventEmitter<any> = new EventEmitter();
   constructor() {}
 
-  async onConnect(payload = {}){
+  public get IoStatus(){
+    return this.socket? true: false;
+  }
+  
+  
+  onConnect(payload = {}){
     try{
+      // conection ---> io(http://my_socket_server:port)
       this.socket = io(environment.server_socket, payload);
     }catch(err){
-      console.log("ERROR "+ err);
+      console.log("CONNECTION SOCKET SERVER ERROR "+ err);
     }
     this.listenEvent('message');
   }
 
   listenEvent(event){
-    this.socket.on(event, res => {
-      console.log(res.msg);
-      this.outEven.emit(res);
-    });
+    try{
+      this.socket.on(event, res => {
+        console.log(res.msg);
+        this.outEven.emit(res);
+      });
+    }catch(err){
+      console.log("ERROR ON SUBSCRIPTION TO SOCKET SERVER "+ err);
+    }
   }
 
   emitEvent = (event = 'default', payload = {}) => {
-    this.socket.emit('default', {payload});
+    try{
+      this.socket.emit( event, {payload} );
+    }catch(err){
+      console.log("ERROR EMMITING TO SOCKET SERVER "+ err);
+    }
   }
 
 }

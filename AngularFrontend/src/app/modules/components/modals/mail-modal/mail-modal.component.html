@@ -1,11 +1,11 @@
-    <div class="modal-header" style="background: -webkit-linear-gradient(-90deg, black 25%, rgb(9, 181, 187) 100%) !important; color: white">
+    <div class="modal-header cairo-font" style="background: -webkit-linear-gradient(-90deg, black 25%, rgb(9, 181, 187) 100%) !important; color: white">
         <h4 class="modal-title" id="modal-basic-title"><i class="fa fa-envelope"></i> {{ 'MODALS.MAIL.TITLE' | translate }}</h4>
         
         <button type="button" class="btn btn-danger" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <i class="fa fa-close"></i>
         </button>
       </div>
-      <div class="modal-body" style="color: rgb(4, 46, 75)">
+      <div class="modal-body cairo-font" style="color: rgb(4, 46, 75)">
         <div class="container flex-center animated fadeIn">
                 <!-- <h1 class="card-title center">MAIL</h1> -->
                   <form *ngIf="mailForm" [formGroup]="mailForm">
@@ -31,7 +31,7 @@
                   </form>   
               </div>
       </div>
-      <div class="modal-footer" style="background-color: whitesmoke;">
+      <div class="modal-footer cairo-font" style="background-color: whitesmoke;">
         <div class="mt-1 w-100 center">
             <button type="button" class="btn btn-primary w-100" (click)="sendMail()"><i class="fa fa-send fa-2x"></i></button>
           </div>
