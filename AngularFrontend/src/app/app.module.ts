@@ -19,8 +19,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LoaderModule } from './utils/loader/loader.module';
 import { MailModalModule } from './modules/components/modals/mail-modal/mail-modal.module';
-import { SocketIoModule } from 'ngx-socket-io';
-import { CookieService } from 'ngx-cookie-service';
 import { SocketProviderConnect } from './services/web-socket.service';
 
 @NgModule({
@@ -38,7 +36,6 @@ import { SocketProviderConnect } from './services/web-socket.service';
     LoginModule,
     LoaderModule,
     MailModalModule,
-    SocketIoModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
@@ -57,7 +54,6 @@ import { SocketProviderConnect } from './services/web-socket.service';
   providers: [
     // HomeResolver,
     SocketProviderConnect,
-    CookieService,
     AuthService,
     NewsletterService,
     {provide: HTTP_INTERCEPTORS, useClass:HttpInterceptorService, multi: true}

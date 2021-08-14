@@ -11,6 +11,7 @@ import { sidebarConfig } from './modules/layout/sidebar/config/sidebar.config';
 import { LoaderService } from './services/loader/loader.service';
 import { SocketProviderConnect } from './services/web-socket.service';
 
+
 const Toast = Swal.mixin({
   toast: true,
   position: 'top',
@@ -31,11 +32,6 @@ export class AppComponent implements OnInit {
   user;
   fadeClass = 'slideInLeft';
 
-  user_id: any;
-  msg: any;
-  input_message: any;
-  show_message: any;
-  messages = [];
 
   config = sidebarConfig;
 
@@ -46,41 +42,70 @@ export class AppComponent implements OnInit {
     private swUpdate: SwUpdate,
     private swPush: SwPush,
     private newsletterService: NewsletterService,
-    private readonly translate: TranslateService,
+    private readonly translate: TranslateService, //Don't remove needed in view for pipe
     private readonly loader: LoaderService,
     protected socketService: SocketProviderConnect,
   ) {
 
-    socketService.outEven.subscribe(res => {
-      console.log("ON EVEN SUBSCRIPTION" + res);
-      // alert ("Esta página usa cookies");
-      this.messages.push(res.msg)
-    });
+    /* Translate initialization */
+        const currentLanguage = navigator.language.substring(0, 2);
+        // this language will be used as a fallback when a translation isn't found in the current language
+        translate.setDefaultLang('es');
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
+        translate.use(currentLanguage);
 
-    const currentLanguage = navigator.language.substring(0, 2);
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('es');
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use(currentLanguage);
-
-    this.checkVersionUpdates();
-    this.subscribeToNotifications();
-    if (!this.storageService.getItem('USER')) {
-      this.router.navigate(['/login']);
-    } else this.user = this.storageService.getItem('USER').user;
+    /* PWA check for updates and notifications subscription */
+        if(environment.production){
+          this.checkVersionUpdates();
+          this.subscribeToNotifications();
+        }
+    
+    /* Check storage and user recovery*/
+        if (!this.storageService.getItem('USER')) {
+          this.router.navigate(['/login']);
+        } else this.user = this.storageService.getItem('USER').user;
   }
 
   ngOnInit() {
-    this.loader._loading$.next(false);
-    this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
-    this.sendData('NEW_VISITOR');
+    // Loading
+      this.loader._loading$.next(false);
+    // Check authentication
+      this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
+    //Start connection socket
+      this.socketService.onConnect({
+        query: {
+          payload: `{"room":"general","user":"${ this.storageService.getItem('USER')? this.storageService.getItem('USER').token : 'UNKNOWN'}"}`
+        },
+      }
+    );
     this.isCollapsed = true;
+    // Emit message to default room
+    this.socketService.emitEvent('default', 'Gerry Webber backs!');
   }
 
+
+
+  private checkVersionUpdates() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.checkForUpdate().then(data => {
+        console.log('Checking for Updates Now...');
+      });
+      this.swUpdate.available.subscribe(event => {
+        if (event.available.appData) {
+          const appData: any = event.available.appData;
+          let msg = `New version ${appData.version} available. Features added:`;
+          msg += `${appData.changelog}.`;
+          msg += ` Reload?`;
+          //this.showPrompt('warning', `Great incoming changes!!!`, msg);
+          this.showToast(`Great incoming changes!!!`, msg);
+        }
+      });
+    }
+  }
+
+
   subscribeToNotifications() {
-
     console.info("SUBSCRIBED TO NOTIFICATIONS");
-
     this.swPush.requestSubscription({
       serverPublicKey: environment.publicKey
     })
@@ -104,30 +129,6 @@ export class AppComponent implements OnInit {
   collapse() {
     if (!this.isCollapsed) {
       this.toggleCollapse();
-    }
-  }
-
-  logout(): void {
-    this.isCollapsed = true;
-    this.authService.clearAuth();
-    this.router.navigate(['/']);
-  }
-
-  private checkVersionUpdates() {
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.checkForUpdate().then(data => {
-        console.log('Checking for Updates Now...');
-      });
-      this.swUpdate.available.subscribe(event => {
-        if (event.available.appData) {
-          const appData: any = event.available.appData;
-          let msg = `New version ${appData.version} available. Features added:`;
-          msg += `${appData.changelog}.`;
-          msg += ` Reload?`;
-          //this.showPrompt('warning', `Great incoming changes!!!`, msg);
-          this.showToast(`Great incoming changes!!!`, msg);
-        }
-      });
     }
   }
 
@@ -170,9 +171,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  /* SOCKET */
-  sendData = (data) => {
-    this.socketService.emitEvent('default', data); //Canal, payload
+  logout(): void {
+    this.isCollapsed = true;
+    this.authService.clearAuth();
+    this.router.navigate(['/']);
   }
 
 }
