@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start:dev": "nodemon index.js"
+    "start:dev": "node index.js"
   },
   "author": "David Teso",
   "license": "ISC",
