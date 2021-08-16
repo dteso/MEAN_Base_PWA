@@ -21,6 +21,7 @@ appShared.use(express.static('shared'));
 app.use('/', appShared); //De esta forma la carpeta shared será accesible simplemente con la url del api
 
 
+
 //CONEXIÓN BASE DE DATOS
 dbConnection();
 
