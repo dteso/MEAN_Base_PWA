@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { User } from 'src/app/models/user.model';
 import { TranslateService } from '@ngx-translate/core';
 import { SocketProviderConnect } from 'src/app/services/web-socket.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ export class HomeComponent implements OnInit {
     email: "",
     name: "",
     role: "",
-    img: "../../assets/person.png",
+    img: `${environment.api_url}/assets/person.png`,
     google: false,
     uid: ""
   };

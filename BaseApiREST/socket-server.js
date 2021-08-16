@@ -9,7 +9,7 @@ startSockets = (app) => {
     const server = require('http').Server(app)
     const io = require('socket.io')(server, {
       cors: {
-        origins: ['http://192.168.1.41:4200'] // Hay que permitir las cors para leol host del front
+        origins: ['http://192.168.1.41:4200'] // Hay que permitir las cors para el host del front
       }
     });
     const chalk = require('chalk');

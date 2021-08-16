@@ -190,8 +190,9 @@ export class ResourcesComponent implements OnInit {
   }
 
   getTruePath(path) {
-    let truePath = environment.api_url;
-    return `${truePath}${path.substring(1, path.length)}`
+    let truePath = environment.base_url;
+    path = path.substring(BASE_PATH.length, path.length);
+    return `${truePath}/${path.substring(1, path.length)}`
   }
 
   setLoaded() {
