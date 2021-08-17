@@ -36,7 +36,7 @@ app.use('/api/upload', require('./routes/file.route'));
 
 /* Mantener la navegación del usuario siempre en nuestro dominio */
 app.get('*',(req,res) => {
-  res.sendFile( __dirname + '/shared/index.html')
+  res.redirect( __dirname + '/shared/index.html');
 } );
 
 startSockets(app);
