@@ -145,3 +145,7 @@ Si no se aporta se visualizará en el navegador el error:
                 Debe ejecutarse el login para obtener el token que será incluido como 'Header' en todas las peticiones que lo requieran. Se identificará como 'x-token'.
 
                 Para la subida de archivos, en postman, como Body seleccionar form-data. En la key se permitirá escoger entre texto y archivo de forma que seleccionaremos archivo.
+
+
+17-08-2021 - 08:52 Generando build con envirmonets.prod de fron sin puerto para el api
+17-08-2021 - 08:58 Wvitando redireccion inicial

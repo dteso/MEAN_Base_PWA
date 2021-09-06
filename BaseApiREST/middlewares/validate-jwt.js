@@ -31,7 +31,6 @@ const validateJWTforProtectedRoute = (req, res, next) => {
         <h1 style="font-size: 5rem;">403</h1>
       </div>
     </span>
-    
     `);
   }
 }

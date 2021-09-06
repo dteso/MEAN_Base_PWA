@@ -38,9 +38,10 @@ import { SocketProviderConnect } from './services/web-socket.service';
     MailModalModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
+      registrationStrategy: 'registerImmediately'
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      // registrationStrategy: 'registerWhenStable:30000'
     }),
     TranslateModule.forRoot({
       defaultLanguage: 'en',

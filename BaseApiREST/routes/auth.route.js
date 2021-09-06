@@ -25,7 +25,7 @@ router.post('/',
 ****************************************************************/
 router.post('/google',
 [
-  check('id_token').not().isEmpty(),
+  // check('id_token').not().isEmpty(),
   // validateFields
 ],
 controller.googleSignIn);

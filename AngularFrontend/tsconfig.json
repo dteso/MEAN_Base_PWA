@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "types": ["node"],
     // "forceConsistentCasingInFileNames": true,
     // "strict": true,
     // "noImplicitReturns": true,
@@ -27,5 +28,5 @@
     "strictInputAccessModifiers": true,
     "strictPropertyInitialization": false,
     "strictTemplates": true
-  }
+  },
 }

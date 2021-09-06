@@ -82,7 +82,7 @@ class AuthController extends BaseController {
       }
       
       res.json({
-        token: id_token,
+        token: await generateJWT(user.id),
         msg: "google sign in success",
         user: googleUser
       })

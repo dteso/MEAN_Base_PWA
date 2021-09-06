@@ -1,0 +1,48 @@
+{
+    "MESSAGES": {
+        "WELCOME": "Bienvenido",
+        "LOGOUT": "Cerrar sesión",
+        "MAIL": {
+            "SENT": "Correo enviado"
+        }
+    },
+    "MENU":{
+        "OPTIONS":{
+            "SKILLS": "Habilidades",
+            "PROJECTS": "Proyectos",
+            "RESOURCES": "Recursos",
+            "CONTACT": "Contacto",
+            "LOGOUT": "Salir"
+        }
+    },
+    "BUTTON":{
+        "ACTION":{
+            "UPLOAD": "Subir Fichero"
+        }
+    },
+    "FILE": {
+        "DELETE": {
+            "SUCCESS": "Archivo borrado correctamente"
+        },
+        "UPLOAD":{
+            "SUCCESS": "Archivo subido correctamente"
+        },
+        "FOLDER_DELETE":{
+            "SUCCESS": "Carpeta borrada correctamente"
+        },
+        "FOLDER_CREATE":{
+            "SUCCESS": "Carpeta creada correctamente"
+        }                
+    },
+    "MODALS": {
+        "MAIL":{
+            "TITLE": "Envianos un e-mail",
+            "SUBJECT": "Asunto",
+            "BODY": "Aquí su mensaje...",
+            "MESSAGE": "Mensaje",
+            "SUBJECT_REQUIRED": "Debe indicar un asunto",
+            "MESSAGE_REQUIRED": "El mensaje no debe estar vacío"
+        }
+    }
+
+}

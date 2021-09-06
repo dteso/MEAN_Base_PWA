@@ -1,0 +1,48 @@
+{
+    "MESSAGES": {
+        "WELCOME": "Welcome",
+        "LOGOUT": "Log Out",
+        "MAIL": {
+            "SENT": "Mail sent"
+        }
+    },
+    "MENU":{
+        "OPTIONS":{
+            "SKILLS": "Skills",
+            "PROJECTS": "Projects",
+            "RESOURCES": "Resources",
+            "CONTACT": "Contact",
+            "LOGOUT": "Log Out"
+        }
+    },
+    "BUTTON":{
+        "ACTION":{
+            "UPLOAD": "Upload File"
+        }
+    },
+    "FILE": {
+        "DELETE": {
+            "SUCCESS": "File deleted succesfully"
+        },
+        "UPLOAD":{
+            "SUCCESS": "File uploaded succesfully"
+        },
+        "FOLDER_DELETE":{
+            "SUCCESS": "Folder deleted successfully"
+        },
+        "FOLDER_CREATE":{
+            "SUCCESS": "Folder created successfully"
+        }                
+    },
+    "MODALS": {
+        "MAIL":{
+            "TITLE": "Send us an e-mail",
+            "SUBJECT": "Subject",
+            "BODY": "Your message here...",
+            "MESSAGE": "Message",
+            "SUBJECT_REQUIRED": "Subject is required",
+            "MESSAGE_REQUIRED": "Message cannot be empty"
+        }
+    }
+
+}

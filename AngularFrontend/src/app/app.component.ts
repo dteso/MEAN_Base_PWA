@@ -72,24 +72,27 @@ export class AppComponent implements OnInit {
     // Check authentication
       this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
     //Start connection socket
-    if(!this.socketService.IoStatus){
+    // if(!this.socketService.IoStatus){
+      
       this.socketService.onConnect({
+        withCredentials: true, //https://socket.io/docs/v3/using-multiple-nodes/index.html -->  Important note: if you are in a CORS situation (the front domain is different from the server domain) and session affinity is achieved with a cookie, you need to allow credentials:
+        transports: ['websocket'],
         query: {
-          payload: `{"room":"general","user":"${ this.storageService.getItem('USER')? this.storageService.getItem('USER').token : 'UNKNOWN'}"}`
+          data: `{"type": "connection","room":"general","user":"${ this.storageService.getItem('USER')? this.storageService.getItem('USER').token : 'UNKNOWN'}"}`
         }
       });
-    }
+    // }
     this.isCollapsed = true;
     // Emit message to default room
-    this.socketService.emitEvent('default', 'Gerry Webber backs!');
+    // this.socketService.emitEvent('default', 'Gerry Webber backs!');
   }
 
 
 
-  private checkVersionUpdates() {
+  private async checkVersionUpdates() {
     if (this.swUpdate.isEnabled) {
-      this.swUpdate.checkForUpdate().then(data => {
-        console.log('Checking for Updates Now...');
+      await this.swUpdate.checkForUpdate().then( data => {
+        console.log('Checking for Updates Now...' + data);
       });
       this.swUpdate.available.subscribe(event => {
         if (event.available.appData) {

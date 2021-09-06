@@ -36,8 +36,8 @@ export class HomeComponent implements OnInit {
       const routeData: any = data;
       //console.log("DATA in resolver: " + JSON.stringify(routeData));
       Object.assign(this.user ,JSON.parse(routeData.data).user);
-      if(this.socketService.IoStatus)
-        this.socketService.emitEvent('home', JSON.stringify(this.user.name));
+      // if(this.socketService.IoStatus)
+      //   this.socketService.emitEvent('home', JSON.stringify(this.user.name));
     });
   }
   
