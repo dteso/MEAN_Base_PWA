@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { sidebarConfig } from './modules/layout/sidebar/config/sidebar.config';
 import { LoaderService } from './services/loader/loader.service';
 import { SocketProviderConnect } from './services/web-socket.service';
+import { SocketClient } from './models/socket-client.model';
 
 
 const Toast = Swal.mixin({
@@ -32,6 +33,8 @@ export class AppComponent implements OnInit {
   user;
   fadeClass = 'slideInLeft';
 
+  socketClient: SocketClient;
+
 
   config = sidebarConfig;
 
@@ -48,50 +51,46 @@ export class AppComponent implements OnInit {
   ) {
 
     /* Translate initialization */
-        const currentLanguage = navigator.language.substring(0, 2);
-        // this language will be used as a fallback when a translation isn't found in the current language
-        translate.setDefaultLang('es');
-        // the lang to use, if the lang isn't available, it will use the current loader to get them
-        translate.use(currentLanguage);
+    const currentLanguage = navigator.language.substring(0, 2);
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('es');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use(currentLanguage);
 
     /* PWA check for updates and notifications subscription */
-        if(environment.production){
-          this.checkVersionUpdates();
-          this.subscribeToNotifications();
-        }
-    
+    if (environment.production) {
+      this.checkVersionUpdates();
+      this.subscribeToNotifications();
+    }
+
     /* Check storage and user recovery*/
-        if (!this.storageService.getItem('USER')) {
-          this.router.navigate(['/login']);
-        } else this.user = this.storageService.getItem('USER').user;
+    if (!this.storageService.getItem('USER')) {
+      this.router.navigate(['/login']);
+    } else this.user = this.storageService.getItem('USER').user;
   }
 
   ngOnInit() {
     // Loading
-      this.loader._loading$.next(false);
+    this.loader._loading$.next(false);
     // Check authentication
-      this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
-    //Start connection socket
-    // if(!this.socketService.IoStatus){
-      
-      this.socketService.onConnect({
-        withCredentials: true, //https://socket.io/docs/v3/using-multiple-nodes/index.html -->  Important note: if you are in a CORS situation (the front domain is different from the server domain) and session affinity is achieved with a cookie, you need to allow credentials:
-        transports: ['websocket'],
-        query: {
-          data: `{"type": "connection","room":"general","user":"${ this.storageService.getItem('USER')? this.storageService.getItem('USER').token : 'UNKNOWN'}"}`
-        }
-      });
-    // }
+    this.authService.isAuthenticated$.subscribe(isLogged => this.logged = isLogged);
+
+    /*socket connection as client*/
+    this.socketClient = this.initSocketClientData();
+    this.socketService.onConnect(this.socketClient);
+    this.socketService.clientId.subscribe( id => {
+      this.socketClient.clientId = id;
+      console.log("Asigned uuid", this.socketClient.clientId);
+    });
+    
     this.isCollapsed = true;
-    // Emit message to default room
-    // this.socketService.emitEvent('default', 'Gerry Webber backs!');
   }
 
 
 
   private async checkVersionUpdates() {
     if (this.swUpdate.isEnabled) {
-      await this.swUpdate.checkForUpdate().then( data => {
+      await this.swUpdate.checkForUpdate().then(data => {
         console.log('Checking for Updates Now...' + data);
       });
       this.swUpdate.available.subscribe(event => {
@@ -100,7 +99,6 @@ export class AppComponent implements OnInit {
           let msg = `New version ${appData.version} available. Features added:`;
           msg += `${appData.changelog}.`;
           msg += ` Reload?`;
-          //this.showPrompt('warning', `Great incoming changes!!!`, msg);
           this.showToast(`Great incoming changes!!!`, msg);
         }
       });
@@ -173,6 +171,14 @@ export class AppComponent implements OnInit {
         )
       }
     });
+  }
+
+  initSocketClientData(): SocketClient {
+    return {
+      type: "CONNECTION",
+      room: "GENERAL",
+      user: "NOT_LOGGED_YET"
+    }
   }
 
   logout(): void {

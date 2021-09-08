@@ -1,49 +1,134 @@
 
 /*
- * -------- socket io connection---------*/
+ * -------- websocket io connection---------*/
 
-let current_users_count = 0;
+const { v4: uuidv4 } = require('uuid');
 
-clients = [];
+// clients = [];
+currentClients = [];
+ids = [];
+currentIds = [];
+
 
 startSockets = (server) => {
   const { Server } = require('ws');
   const wss = new Server({ server });
 
-  // wss.listen(5000, function () {
-  //     console.log('\n')
-  //     console.log(`>> Socket listo y escuchando por el puerto: 5000`)
-  // })
-
+  
   wss.on('connection', (ws, req) => {
-
+    /*On client connection*/
+    const uuid = uuidv4();
     console.log('Client connected ' + req.socket.remoteAddress);
+    console.info("Connection ACCEPTED. Generating UUID...");
+    console.info("UUID generated..." + uuid);
+
+    // Se le envía al cliente un uuid generador por el servidor. El cliente estará configurado para que
+    // al recibir un objeto con una propiedad uuid se la asigne y devuelva un paquete con el id confirmando la asignación
+    ws.send(
+      `{"uuid":"${uuid}"}`
+    );
+
+    // Emitimos la nueva conexión a todos los clientes conectados al servidor
     wss.clients.forEach( ws => {
-      ws.send('New client connected. Total users connected: ' + wss.clients.size);
+      ws.send(`{"message": "NEW CLIENT ${uuid} CONNECTED! Total users connected: ${wss.clients.size}"}`);
     });
+    console.log(" Usuarios logados: " + wss.clients.size);
 
-    clients.push(ws);
-
-    console.log(" Usuarios logados: "+ wss.clients.size);
-
-    ws.send(new Date().toTimeString());
-
+    /* On client close */
     ws.on('close', (ws) => {
-      console.log('Client disconnected');
-      console.log(" Usuarios logados: "+ wss.clients.size);
+      // Guardamos las id's que hay antes de que se desconecte un cliente
+      currentIds = [...ids];
+      console.log('XXXXX CLIENT DISCONECTED XXXXXX');
+      // Sondeamos que clientes siguen conectados. Recibiremos respuestas como nuevas conexiones...
+      wss.clients.forEach(ws => {
+        ws.send(`{"action": "check-alive"}`);
+      });
+      // ... y puesto que después del borrado en las conexiones vamos a ir añadiendo los elementos que siguen conectados ( recibiremos respuesta sólo de los conectados ) inicializamos los arreglos
+      ids = [];
+      currentClients = [];
     });
 
+
+    /* On message from client */
     ws.on('message', (event) => {
-      console.log("Message from client >>> " + event);
-      eventObject = JSON.parse(event);
+      const eventObject = JSON.parse(event);
+      console.info('Message from client: ', eventObject);
+      /*
+        eventObject = {
+          type: 'TYPE',
+          clientId: 'abcdef0123456'
+        }
+      */
+      if (eventObject.type === 'CONNECTION' && eventObject.clientId) {
+        console.log("NEW CONNECTION " + eventObject.clientId);
+        setConnectedClients(ws, eventObject);
+      }
 
-      console.warn('Event Type: ', eventObject.type);
-      console.warn('Room: ', eventObject.room);
-      console.warn('User: ', eventObject.user);
-      console.warn('Message: ', eventObject.msg);
     });
-
   });
+
+  setConnectedClients = (ws, eventObject) => {
+    console.info("SUPERVISING...");
+    // comprabmos que el cliente tenga id y no se encuentre ya conectado 
+    if (eventObject.clientId !== undefined
+      && (!ids.includes(eventObject.clientId) || currentClients.length === 0)) {
+      console.info("CHECKING CONNECTIONS");
+      // Si no estaba registrado o es el primero lo añadimos a nuestros clientes
+      currentClients.push({
+        ws,
+        id: eventObject.clientId
+      });
+
+      //Recalculamos las ids. Posteriormente utilizamos este array para hacer comprobaciones de qué elementos se desconectaron
+      ids = [];
+      currentClients.forEach(client => {
+        ids.push(client.id);
+      });
+    }
+
+    // En el momento en el que hayamos registrado todas las conexiones existentes se cumple la condición
+    if (currentClients.length === wss.clients.size) {
+      // Comprobamos si se han eliminado elementos comparando arrays
+      let exitedUsers = intersection(currentIds, ids);
+      // Si se han eliminado elementos...
+      if (exitedUsers.length > 0) {
+        console.info('\n\n<-----------···· User logged out -----------····>');
+        console.info('\t'+exitedUsers);
+        console.info('<-----------····-------------------------------->\n');
+        // Se emite el cliente desconectado al resto de usuarios
+        wss.clients.forEach(ws => {
+          ws.send(`{"action": "user-logged-out", "id":"${exitedUsers[0]}"}`);
+        });
+
+        exitedUsers = [];
+        // Recuperamos las ids en función de los clientes actuales
+        currentIds = [...ids];
+        const index = currentIds.findIndex(id => id == exitedUsers[0]);
+      }
+      showStats();
+    }
+
+  }
+
+
+  intersection = (xs, ys) => {
+    return xs.filter(x => ys.indexOf(x) === -1)
+  };
+
+
+  showStats = () => {
+    console.info("\n\n\n");
+
+    console.info("------------ Current clients ---------------")
+    console.info("Active sockets", currentClients.length);
+    console.info("Real sockets", wss.clients.size);
+    console.info("--------------------------------------------")
+    currentClients.forEach(client => {
+      console.info(">", client.id);
+    })
+    console.info("********************************************");
+    console.info("\n\n\n");
+  }
 }
 
 module.exports = {
@@ -114,7 +199,7 @@ module.exports = {
 //           transports: ['websocket'],
 //           autoconnect: true
 //         });
- 
+
 
 //   io.on('connection', (socket) => {
 //     console.log('Client connected');
@@ -176,9 +261,9 @@ module.exports = {
 //       }
 //     });
 //     const chalk = require('chalk');
-    
+
 //     io.on('connection', function (socket) {
-    
+
 //       /** handshake: Es el id de conexion con el dispositivo cliente */
 //       const id_handshake = socket.id;
 //       /** query: En este ejemplo practico queremos enviar una información extra en la conexión
@@ -190,7 +275,7 @@ module.exports = {
 //       current_users_count ++;
 //       console.log(`${chalk.magenta(`CURRENT USERS ${current_users_count}`)}`);
 //       console.log(`CURRENT USERS ${current_users_count}`);
-    
+
 //       if (!payload) {
 //           console.log(`${chalk.red(`No payload`)}`);  
 //       } else {
@@ -235,7 +320,7 @@ module.exports = {
 
 
 //       };
-    
+
 //       /**
 //        * Si un dispositivo se desconecto lo detectamos aqui
 //        */
@@ -248,7 +333,7 @@ module.exports = {
 //             })
 //         });
 //     });
-    
+
 //     /* Socket server */
 //     server.listen(5000, function () {
 //       console.log('\n')
