@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1631210967279,
+  "timestamp": 1631292412094,
   "appData": {
-    "version": "1.1.15",
+    "version": "1.1.16",
     "changelog": " New background fixxx"
   },
   "index": "/index.html",
@@ -20,7 +20,7 @@
         "/839.2437fb3dd75f3a35d7aa.js",
         "/favicon.ico",
         "/index.html",
-        "/main.785d338106ae102d651b.js",
+        "/main.b93f7e0a669a346274ff.js",
         "/manifest.webmanifest",
         "/polyfills.1a35a138d9c65624f602.js",
         "/runtime.4a6a9f4f20fc00434607.js",
@@ -226,8 +226,8 @@
     "/assets/vendor/animate/animate.css": "cd3c561d0d0ca803a3089f4565fb81d28c4954aa",
     "/bg9.c641e58ebb7841bad2ad.jpg": "4ed55863fc4d6d5e2f9c55c6515fee528b5a3305",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "3c35e9e70956683e21075d1a9710a02391879406",
-    "/main.785d338106ae102d651b.js": "4297f12c1ac9caa0ebede2b3a164c8e20e822974",
+    "/index.html": "f9afabd027ef843623910e324dc2ad4349cc54ba",
+    "/main.b93f7e0a669a346274ff.js": "35c170229f1d3757f997f37815d2e89e2c365a4a",
     "/manifest.webmanifest": "dae83cc0a851e1b12e8d4352d286363b50f4c832",
     "/polyfills.1a35a138d9c65624f602.js": "aef21634c684acc78105c5054a4ad7d81e792d11",
     "/runtime.4a6a9f4f20fc00434607.js": "f5ac5597ddf132a003ca726404252bf151ec2302",
