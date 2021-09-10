@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SocketClient } from '../models/socket-client.model';
-import { webSocket } from "rxjs/webSocket";
+import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 import { Subject } from 'rxjs';
 @Injectable()
 export class SocketProviderConnect {
 
   constructor() { }
 
-  subject;
-  clientId = new Subject<any>();
-  uuid;
+  uuid; //Uuid que va a tener el cliente en cada una de sus conexiones a servidor. Es generado por servidor cuando recibe comunicación con el websocket
 
-  public onConnect(payload: SocketClient = {}): any {
+  subject: WebSocketSubject<any>; //La conexión en sí, es la que nos va a permitir leer (.subscribe) o escribir (.next())
+  socketClient = new Subject<any>(); //La información del cliente al que se le va a asignar una uuid generada por el servidor en el momento de la conexión
+
+  public onConnect(payload: SocketClient = {}): any { // ---> El payload recibido viene desde el appComponent en el ngOnInit()
     try {
       //Establecemos conexión
       this.subject = webSocket(environment.server_socket);
@@ -20,11 +21,13 @@ export class SocketProviderConnect {
       // Leemos del servidor. Nos suscribimos. A partir de ahora vamos a recibir todos los mensajes del servidor aquí
       this.subject.subscribe(ws => {
         console.log('Socket Data', ws);
-        const socket: any = ws;
 
-        //Emitiemos el payload al servidor
-        this.send(payload);
-        this.checkSocket(socket);
+        //Emitiemos el payload al servidor. Incialmente sólo vamos a mandar un evento con la propiedad type = 'CONNECT' (ver app.component)
+        //Cuando el servidor reciba esta info sin id, el se encarga de asignarlo y nos devuelve un uuid
+        setInterval(()=>{this.send(payload)}, 5000); // Debemos retransmitirla para que no se corte la comunicación. 
+                                                     // Esto en localhost no tiene por qué pasar pero hay servidores como Heroku en los que existe un Timeout si no se recibe evento del servidor.
+                                                     // Lo óptimo es configurar esos Timeouts en servidor y sólo enviar una vez.
+        this.checkSocket(ws); //Vamos a leer la información que viene como datos del cliente. Se manda el ws recibido como respuesta para analizarlo
       })
     } catch (err) {
       console.log("CONNECTION SOCKET SERVER ERROR " + err);
@@ -44,17 +47,22 @@ export class SocketProviderConnect {
       client.clientId = this.uuid;
       this.send(client);
     }
+
     // Si otro cliente se desconecta se nos notifica por aquí
     else if (socket.action && socket.action === "user-logged-out") {
-      console.log("USER LOGGED OUT " + socket.id)
+      console.log("USER LOGGED OUT " + socket.id + " / " + socket.users + " users left.")
     }
-    // Si el socket rae un objeto con uuid debemos asignarla a nuestro cliente
+
+    // Si el socket trae un objeto con uuid debemos asignarla a nuestro cliente
     else if (socket.uuid) {
       console.info("UUID Assigned by server: ", socket.uuid);
-      this.clientId.next(socket.uuid);
+      this.socketClient.next(socket);
       this.uuid = socket.uuid;
+
+    } 
+
     // Si se trata de un mensaje 
-    } else if (socket.message) {
+    else if (socket.message) {
       console.info(socket.message);
     }
   }

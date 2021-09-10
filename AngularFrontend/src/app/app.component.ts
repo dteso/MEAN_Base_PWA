@@ -78,11 +78,10 @@ export class AppComponent implements OnInit {
     /*socket connection as client*/
     this.socketClient = this.initSocketClientData();
     this.socketService.onConnect(this.socketClient);
-    this.socketService.clientId.subscribe( id => {
-      this.socketClient.clientId = id;
+    this.socketService.socketClient.subscribe( client => {
+      this.socketClient.clientId = client.uuid;
       console.log("Asigned uuid", this.socketClient.clientId);
     });
-    
     this.isCollapsed = true;
   }
 

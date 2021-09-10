@@ -4,8 +4,9 @@
 
 const { v4: uuidv4 } = require('uuid');
 
-// clients = [];
+
 currentClients = [];
+
 ids = [];
 currentIds = [];
 
@@ -92,12 +93,11 @@ startSockets = (server) => {
       let exitedUsers = intersection(currentIds, ids);
       // Si se han eliminado elementos...
       if (exitedUsers.length > 0) {
-        console.info('\n\n<-----------···· User logged out -----------····>');
-        console.info('\t'+exitedUsers);
-        console.info('<-----------····-------------------------------->\n');
+        console.info('\n\n User logged out -----------····>' + exitedUsers);
+        
         // Se emite el cliente desconectado al resto de usuarios
         wss.clients.forEach(ws => {
-          ws.send(`{"action": "user-logged-out", "id":"${exitedUsers[0]}"}`);
+          ws.send(`{"action": "user-logged-out", "id":"${exitedUsers[0]}", "users": "${currentClients.length}"}`);
         });
 
         exitedUsers = [];
