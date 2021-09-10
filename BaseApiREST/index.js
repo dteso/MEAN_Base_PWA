@@ -49,11 +49,11 @@ app.use('/api/upload', require('./routes/file.route'));
 
 
 /* Mantener la navegación del usuario siempre en nuestro dominio */
-// app.get('*',(req,res) => {
-//   // console.log(path.join(__dirname, 'shared', 'index.html'));
-//   const index = path.join(__dirname, 'shared', 'index.html');
-//   res.sendFile(index);
-// } );
+app.get('*',(req,res) => {
+  // console.log(path.join(__dirname, 'shared', 'index.html'));
+  const index = path.join(__dirname, 'shared', 'index.html');
+  res.sendFile(index);
+} );
 
 let server = app.listen(process.env.PORT, () => {
   console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
