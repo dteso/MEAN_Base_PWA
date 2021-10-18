@@ -1,4 +1,6 @@
 var fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
+const File = require('../models/file.model');
 
 class TreeNode {
     path;
@@ -9,6 +11,63 @@ class TreeNode {
       this.children = [];
     }
   }
+
+createFile = (req, res) => {
+    const file = req.files.image;
+    //Extraer extension
+    const splittedFilename = file.name.split('.');
+    const extension = splittedFilename[splittedFilename.length - 1];
+
+    //Validar extension
+    const validExtensions = ['png', 'jpg', 'jpeg', 'png', 'gif', 'pdf'];
+    if (!validExtensions.includes(extension)) {
+        console.log(`! ERROR : 'No extension allowed'`);
+        return res.status(400).json({
+            ok: false,
+            msg: 'No extension allowed'
+        })
+    }
+
+    //Generar nombre único del archivo
+    const fileName = `${uuidv4()}.${extension}`;
+
+    //Path para guardar la imagen
+    const path = `${req.body.folder}/${fileName}`;
+    console.log(path);
+
+    // Vamos a guardar la imágen temporalmente, en una ruta correspondiente
+    // al árbol dentro de la carpeta shared ( carpeta pública ). Esto lo haremos para 
+    // poder leer con readFileSync desde la carpeta y poser establecerlo como data de nuestra imágen en BD.
+    // A continuación borramos la imágen de la carpeta pues ya podremos cargarla directamente de BD
+    file.mv(path, async (err) => {
+        if (err){
+            console.log(`! ERROR : ${err}`);
+            return res.status(500).json({
+                ok: false,
+                msg: `Error copying file ${err}`
+            });
+        }
+        const objectFile = new File({
+            name: splittedFilename[0],
+            type: extension,
+            src: path,
+            folder: (req.body.folder.split('/'))[(req.body.folder.split('/')).length - 1],
+            catalog: req.body.catalog,
+            img:{
+                data: fs.readFileSync(path), //leeemos síncronamente el data de la carpeta en la que hemos guardado la imágen temporalmente, de esa forma lo tendremos disponible seguro al cargarse para establecerlo en el data
+                contentType: "image"
+            }
+        });
+        let dbFile =  await objectFile.save(); //Guardamos la imágen en base de datos
+        deleteFile(dbFile.src); //Borramos de disco
+
+        return res.json({
+            ok: true,
+            msg: `SUCCESS - File ${fileName} Uploaded`,
+            file: dbFile 
+        });
+    });
+}
 
 // delete file named 'sample.txt'
 
@@ -78,6 +137,7 @@ buildTree = (rootPath) => {
   }
 
 module.exports = {
+    createFile,
     deleteFile,
     buildTree,
     createFolder,

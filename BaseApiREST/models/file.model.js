@@ -18,7 +18,18 @@ const FileSchema = Schema({
   folder: {
     type: String,
     required: true
-  }
+  },
+  catalog: {
+    type: String
+  },
+  img: {
+    data: {
+        type: Buffer
+    },
+    contentType: {
+        type: String
+    }
+}
 });
 
 FileSchema.method('toJSON', function () {

@@ -15,7 +15,7 @@ export class FileuploadService {
 
   async subirArchivo(
     file: File,
-    type: string,
+    catalog: string,
     folder: string
   ){
     try{
@@ -23,6 +23,7 @@ export class FileuploadService {
       const formData = new FormData();
       formData.append('image', file);
       formData.append('folder', folder);
+      formData.append('catalog', catalog);
       const resp =  await fetch(url, {
         method: 'PUT',
         headers:{

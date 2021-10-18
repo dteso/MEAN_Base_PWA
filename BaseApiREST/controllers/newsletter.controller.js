@@ -16,9 +16,9 @@ webpush.setVapidDetails(
 
 const notificationPayload = {
     "notification": {
-        "title": "Angular News",
-        "body": "Newsletter Available!",
-        "icon": "assets/main-page-logo-small-hat.png",
+        "title": "Welcome to D1G17AL0PHY!!!",
+        "body": "Bits in veins",
+        "icon": "/assets/medusa.jpg",
         "vibrate": [100, 50, 100],
         "data": {
             "dateOfArrival": Date.now(),

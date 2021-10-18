@@ -105,7 +105,7 @@ startSockets = (server) => {
         currentIds = [...ids];
         const index = currentIds.findIndex(id => id == exitedUsers[0]);
       }
-      showStats();
+      //showStats();
     }
 
   }

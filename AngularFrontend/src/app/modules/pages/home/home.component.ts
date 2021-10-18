@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     email: "",
     name: "",
     role: "",
-    img: `${environment.api_url}/assets/person.png`,
+    img: `./assets/person.png`,
     google: false,
     uid: ""
   };

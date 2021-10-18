@@ -1,20 +1,6 @@
 <div class="container" style=" width: 100%;">
-  <!-- {{counter}} -->
-  <div class="row">
-    <div class="col-6 p-1">
-      <img (load)="setLoaded()" src="../../../../assets/bg4.jpg" width="100%" height="100%" class="mt-1 animated zoomInLeft"/>
-    </div>
-    <div class="col-6 p-1">
-      <img (load)="setLoaded()" src="../../../../assets/bg5.jpg" width="100%" height="100%" class="mt-1 animated zoomInRight" />
-    </div>
-  </div>
-  <div class="row">
-    <div  class="col-6 p-1">
-      <img (load)="setLoaded()" src="../../../../assets/bg6.jpg" width="100%" height="100%" class="mt-1 animated bounceIn"/>
-    </div>
-    <div class="col-6 p-1">
-      <img (load)="setLoaded()" src="../../../../assets/bg7.jpg" width="100%" height="100%" class="mt-1 animated fadeInUp"/>
-    </div>
+  <div class="col-6 p-1" *ngFor="let image of dbFiles;">
+    <img (load)="setLoaded()" [src]="'data:image/jpg;base64,'+image.img.data" width="100%" height="100%" class="mt-1 animated zoomInLeft"/>
   </div>
 </div>
 

@@ -1,8 +1,6 @@
-const { response } = require('express');
 const File = require('../models/file.model');
 const { BaseController } = require('./base.controller');
-const { v4: uuidv4 } = require('uuid');
-const { deleteFile, buildTree, createFolder, deleteFolder } = require('../helpers/filetools');
+const { deleteFile, buildTree, createFolder, deleteFolder, createFile } = require('../helpers/filetools');
 const { logger } = require('../helpers/logger');
 
 class FileController extends BaseController {
@@ -15,62 +13,18 @@ class FileController extends BaseController {
     uploadFile = async (req, res) => {
         try{
             if (!req.files || Object.keys(req.files).length === 0) {
-                logger(`! ERROR :  'No file selected'`);
+                console.log(`! ERROR :  'No file selected'`);
                 return res.status(400).json({
                     ok: false,
                     msg: 'No file selected'
                 })
             }
-            console.log("Folder: " + req.body.folder);
-    
+            console.log("Folder: " + req.body.folder);   
             //Procesar la imágen
-            const file = req.files.image;
-    
-            //Extraer extension
-            const splittedFilename = file.name.split('.');
-            const extension = splittedFilename[splittedFilename.length - 1];
-    
-            //Validar extension
-            const validExtensions = ['png', 'jpg', 'jpeg', 'png', 'gif', 'pdf'];
-            if (!validExtensions.includes(extension)) {
-                logger(`! ERROR : 'No extension allowed'`);
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'No extension allowed'
-                })
-            }
-    
-            //Generar nombre único del archivo
-            const fileName = `${uuidv4()}.${extension}`;
-    
-            //Path para guardar la imagen
-            const path = `${req.body.folder}/${fileName}`;
-            console.log(path);
-            const objectFile = new File({
-                name: splittedFilename[0],
-                type: extension,
-                src: path,
-                folder: (req.body.folder.split('/'))[(req.body.folder.split('/')).length - 1]
-            });
-            // Use the mv() method to place the file somewhere on your server
-            file.mv(path, async (err) => {
-                if (err){
-                    logger(`! ERROR : ${err}`);
-                    return res.status(500).json({
-                        ok: false,
-                        msg: `Error copying file ${err}`
-                    });
-                }
-                let dbFile =  await objectFile.save();
-                logger(`File ${fileName} Uploaded`);
-                res.json({
-                    ok: true,
-                    msg: `SUCCESS - File ${fileName} Uploaded`,
-                    file: dbFile 
-                })
-            });
+            createFile(req, res);
+            
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: `Error during upload process ${err}`
@@ -85,7 +39,7 @@ class FileController extends BaseController {
         try{
             const dbFiles = await File.find({}); 
             const routes = buildTree('./shared');
-            logger(`SUCCESS - FILES were LOADED`);
+            console.log(`SUCCESS - FILES were LOADED`);
             res.json({
               ok: true,
               msg: `FILES were LOADED sucessfully`,
@@ -93,7 +47,7 @@ class FileController extends BaseController {
               routes
             });
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR LISTING FILES : ${err}`);
             res.json({
                 ok: false,
                 msg: `err`,
@@ -112,7 +66,7 @@ class FileController extends BaseController {
             }
             //TODO: Devolver routas por ruta real. Esto implica cambiar la petición a un post y el folder en el body
             const dbFiles = await File.find({ folder }); 
-            logger(`SUCCESS - FILES from folder ${folder} LOADED`);
+            console.log(`SUCCESS - FILES from folder ${folder} LOADED`);
             res.json({
               ok: true,
               msg: `FILES from folder <${folder}> were LOADED sucessfully`,
@@ -120,13 +74,12 @@ class FileController extends BaseController {
               routes
             });
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.json({
                 ok: false,
                 msg: `err`,
               });
         }
-
     }
 
     deleteFile = async (req,res) => {
@@ -139,10 +92,10 @@ class FileController extends BaseController {
                     error: 'File not found'
                 });
             }
-            await deleteFile(dbFile.src);
+            //await deleteFile(dbFile.src);
             await File.findByIdAndDelete(uid);
             const routes = buildTree(this.getDirFromFileRoute(dbFile.src));
-            logger(`SUCCESS - File uid=${uid} DELETED sucessfully`);
+            console.log(`SUCCESS - File uid=${uid} DELETED sucessfully`);
             return res.json({
               ok: true,
               msg: `File uid=${uid} DELETED sucessfully`,
@@ -150,7 +103,7 @@ class FileController extends BaseController {
               routes
             });
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -164,14 +117,14 @@ class FileController extends BaseController {
         try{
             await createFolder(req.body.folderSrc);
             const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
-            logger(`SUCCESS - Folder src=${req.body.folderSrc} CREATED sucessfully`);
+            console.log(`SUCCESS - Folder src=${req.body.folderSrc} CREATED sucessfully`);
             return res.json({
               ok: true,
               msg: `Folder src=${req.body.folderSrc} CREATED sucessfully`,
               routes
             });
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -185,14 +138,14 @@ class FileController extends BaseController {
             await deleteFolder(req.body.folderSrc);
             const routes = buildTree(this.getDirFromFileRoute(req.body.folderSrc));
             console.log(req.body.folderSrc);
-            logger(`SUCCESS - FOLDER src=${req.body.folderSrc} DELETED sucessfully`);
+            console.log(`SUCCESS - FOLDER src=${req.body.folderSrc} DELETED sucessfully`);
             return res.json({
               ok: true,
               msg: `FOLDER src=${req.body.folderSrc} DELETED sucessfully`,
               routes
             });
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.status(500).json({
                 ok: false,
                 error: err
@@ -205,13 +158,13 @@ class FileController extends BaseController {
         const root = req.body.path;
         try{
             const routes = buildTree(root);
-            logger(`SUCCESS - build tree loaded`);
+            console.log(`SUCCESS - build tree loaded`);
             res.json({
                 ok: true,
                 paths: routes
             })
         }catch(err){
-            logger(`! ERROR : ${err}`);
+            console.log(`! ERROR : ${err}`);
             res.status(400).json({
                 ok: false,
                 error: err

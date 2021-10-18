@@ -85,21 +85,38 @@ export class ResourcesComponent implements OnInit {
 
   /* ejecuta la subida de un archivo al servidor */
   uploadFile() {
-    console.log("Archivo subido!!!");
-    const terminalCurrentFolder = this.currentPath.split('/')[(this.currentPath.split('/')).length - 1];
-    this.fileUploadService.subirArchivo(this.fileToUpload, 'tipo1', this.currentPath).then((img) => {
-      console.log("Imagen subida: " + img);
-      this.imgTemp = undefined;
-      this.fileToUpload = undefined;
-      this.showPrompt(this.translateService.instant('FILE.UPLOAD.SUCCESS'));
-      this.fileUploadService.getFilesByFolder(terminalCurrentFolder).subscribe(res => {
-        this.dbFiles = res.dbFiles;
-        this.dbFiles.map(file => file.src = this.getTruePath(file.src));
-        this.imagesLoadedLength = this.dbFiles.length;
-        this.showFileInput=false;
-      });
-    }
-    )
+    Swal
+    .fire({
+      title: "Select catalog",
+      input: "select",
+      inputOptions: {
+        'catalog_1': 'Catalog A',
+        'catalog_2': 'Catalog B',
+        'catalog_3': 'Catalog C',
+        'catalog_4': 'Catalog D'
+      },
+      showCancelButton: true,
+      confirmButtonText: "Confirm Upload",
+      cancelButtonText: "Close",
+    })
+    .then(resultado => {
+      if (resultado.value) {
+        let catalog = resultado.value;
+        const terminalCurrentFolder = this.currentPath.split('/')[(this.currentPath.split('/')).length - 1];
+        this.fileUploadService.subirArchivo(this.fileToUpload, catalog, this.currentPath).then((img) => {
+          console.log("Imagen subida: " + img);
+          this.imgTemp = undefined;
+          this.fileToUpload = undefined;
+          this.showPrompt(this.translateService.instant('FILE.UPLOAD.SUCCESS'));
+          this.fileUploadService.getFilesByFolder(terminalCurrentFolder).subscribe(res => {
+            this.dbFiles = res.dbFiles;
+            this.dbFiles.map(file => file.src = this.getTruePath(file.src));
+            this.imagesLoadedLength = this.dbFiles.length;
+            this.showFileInput=false;
+          });
+        });
+      }
+    });
   }
 
   /* borra un archivo */
@@ -192,7 +209,7 @@ export class ResourcesComponent implements OnInit {
   getTruePath(path) {
     let truePath = environment.base_url;
     path = path.substring(BASE_PATH.length, path.length);
-    return `${truePath}${path.substring(1, path.length)}`
+    return `${truePath}/${path.substring(1, path.length)}`
   }
 
   setLoaded() {
@@ -226,7 +243,7 @@ export class ResourcesComponent implements OnInit {
 
   showImage(path){
     Swal.fire({
-      imageUrl: path,
+      imageUrl: 'data:image/jpg;base64,'+ path,
       imageWidth: 400,
       imageAlt: 'Custom image',
       showConfirmButton: false

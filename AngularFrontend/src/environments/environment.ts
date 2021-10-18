@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  base_url: "http://192.168.1.41:3000",
-  api_url: "http://192.168.1.41:3000/api",
-  server_socket: "ws://192.168.1.41:3000",
+  base_url: "http://localhost:4001",
+  api_url: "http://localhost:4001/api",
+  server_socket: "ws://localhost:8080/socket",
   publicKey:"BAfOIbp_UDfO0Vw6rFvJ0DGHyoucjPML_w8DjsxnIgMhzCnnuwL1TSkuRwESsIo1PlU6s7C11cowbJh_HJXsLS0",
   privateKey:"5iMZSHGFKPjTjA5dnxaVSsfINHVLqBWWKxY9AEDiWb8"
 };

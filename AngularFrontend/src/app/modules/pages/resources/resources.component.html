@@ -89,7 +89,7 @@
             <strong>File</strong>
         </div>
         <div class="col-3">
-            <p>Folder</p>
+            <p>Catalog</p>
         </div>
         <div class="col-3">
             Image
@@ -104,10 +104,11 @@
             <strong>{{file.name | ellipsis }}</strong>
         </div>
         <div class="col-3">
-            <p>/{{file.folder}}</p>
+            <p>/{{file.catalog}}</p>
         </div>
-        <div class="col-3" style="cursor: pointer;"  (click)="showImage(file.src)">
-            <img (load)="setLoaded()" [src]="file.src" width="35rem" height="35rem" />
+        <div class="col-3" style="cursor: pointer;"  (click)="showImage(file.img.data)">
+            <!-- <img (load)="setLoaded()" [src]="file.src" width="35rem" height="35rem" /> -->
+            <img (load)="setLoaded()" [src]="'data:image/jpg;base64,'+file.img.data" width="35rem" height="35rem" />
         </div>
         <div class="col-2">
             <i style="cursor: pointer;" class="fa fa-trash" (click)="deleteFile(file.uid)"></i>
